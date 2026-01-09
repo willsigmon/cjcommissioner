@@ -270,6 +270,17 @@ body {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.06);
+}
+
+/* Icon container animation on card hover */
+.glass-card:hover .flex-shrink-0 {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.glass-card .flex-shrink-0 {
+  transition: transform 0.3s ease;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -328,6 +339,15 @@ body {
 .btn-glow {
   position: relative;
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-glow:hover {
+  transform: translateY(-2px);
+}
+
+.btn-glow:active {
+  transform: translateY(0);
 }
 
 .btn-glow::before {
@@ -399,7 +419,46 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ===== TYPOGRAPHY REFINEMENTS ===== */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+
+/* ===== LINK HOVER EFFECTS ===== */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* ===== PILL/TAG HOVER ===== */
+.pill-hover,
+span[class*="rounded-full"][class*="px-3"] {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.pill-hover:hover,
+span[class*="rounded-full"][class*="px-3"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
 }
 
 /* ===== SKIP LINK ===== */
