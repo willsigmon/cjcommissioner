@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -93,7 +93,34 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
     </svg>
   ),
+  Send: () => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+    </svg>
+  ),
+  Loader: () => (
+    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+    </svg>
+  ),
 };
+
+// Floating Orbs component for Web 3.0 aesthetic
+function FloatingOrbs() {
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      {/* Primary orb - top right */}
+      <div className="orb orb-primary w-[600px] h-[600px] -top-48 -right-48 animate-float-slow" />
+      {/* Accent orb - bottom left */}
+      <div className="orb orb-accent w-[500px] h-[500px] -bottom-32 -left-32 animate-float-reverse" />
+      {/* Success orb - center right */}
+      <div className="orb orb-success w-[300px] h-[300px] top-1/2 -right-20 animate-morph" />
+      {/* Small accent orb */}
+      <div className="orb orb-accent w-[200px] h-[200px] top-1/4 left-1/4 animate-float" />
+    </div>
+  );
+}
 
 // Countdown component
 function Countdown() {
@@ -120,17 +147,175 @@ function Countdown() {
   }, []);
 
   return (
-    <div className="flex gap-4 justify-center">
+    <div className="flex gap-3 sm:gap-4 justify-center">
       {Object.entries(timeLeft).map(([unit, value]) => (
         <div key={unit} className="text-center">
-          <div className="bg-[#1e3a5f] text-white text-3xl md:text-4xl font-bold px-4 py-3 rounded-xl min-w-[70px] animate-countdown">
+          <div className="glass bg-white/20 text-white text-2xl sm:text-3xl md:text-4xl font-bold px-3 sm:px-4 py-2 sm:py-3 rounded-2xl min-w-[60px] sm:min-w-[70px] animate-countdown">
             {value.toString().padStart(2, "0")}
           </div>
-          <div className="text-sm text-slate-600 dark:text-slate-400 mt-2 uppercase tracking-wider font-medium">
+          <div className="text-xs sm:text-sm text-white/70 mt-2 uppercase tracking-wider font-medium">
             {unit}
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+// Contact Form component with actual functionality
+function ContactForm() {
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    interest: 'Signing the petition',
+    message: ''
+  });
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setFormState('submitting');
+
+    try {
+      // Using Formspree for form handling - free tier
+      const response = await fetch('https://formspree.io/f/cturrentinejr@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          interest: formData.interest,
+          message: formData.message,
+          _subject: `Campaign Contact: ${formData.interest}`,
+        }),
+      });
+
+      if (response.ok) {
+        setFormState('success');
+        setFormData({ name: '', email: '', interest: 'Signing the petition', message: '' });
+      } else {
+        // Fallback to mailto if Formspree fails
+        const mailtoLink = `mailto:cturrentinejr@gmail.com?subject=${encodeURIComponent(`Campaign Contact: ${formData.interest}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nInterest: ${formData.interest}\n\nMessage:\n${formData.message}`)}`;
+        window.location.href = mailtoLink;
+        setFormState('success');
+      }
+    } catch {
+      // Fallback to mailto
+      const mailtoLink = `mailto:cturrentinejr@gmail.com?subject=${encodeURIComponent(`Campaign Contact: ${formData.interest}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nInterest: ${formData.interest}\n\nMessage:\n${formData.message}`)}`;
+      window.location.href = mailtoLink;
+      setFormState('success');
+    }
+  };
+
+  if (formState === 'success') {
+    return (
+      <div className="glass-card rounded-3xl p-8 text-center">
+        <div className="w-16 h-16 mx-auto mb-4 bg-[#10b981] rounded-full flex items-center justify-center text-white">
+          <Icons.CheckCircle />
+        </div>
+        <h3 className="text-2xl font-bold text-[#1e3a5f] dark:text-white mb-2">Message Sent!</h3>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">
+          Thank you for reaching out. CJ or his team will get back to you soon.
+        </p>
+        <button
+          onClick={() => setFormState('idle')}
+          className="text-[#c9a227] font-bold hover:underline"
+        >
+          Send another message
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="glass-card rounded-3xl p-8 shadow-xl">
+      <h3 className="text-2xl font-bold text-[#1e3a5f] dark:text-white mb-6">
+        Send a Message
+      </h3>
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            Your Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="form-input w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-xl bg-white/50 dark:bg-slate-700/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent backdrop-blur-sm"
+            placeholder="John Doe"
+          />
+        </div>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="form-input w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-xl bg-white/50 dark:bg-slate-700/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent backdrop-blur-sm"
+            placeholder="john@example.com"
+          />
+        </div>
+        <div>
+          <label htmlFor="interest" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            I&apos;m Interested In
+          </label>
+          <select
+            id="interest"
+            name="interest"
+            value={formData.interest}
+            onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+            className="form-input w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-xl bg-white/50 dark:bg-slate-700/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent backdrop-blur-sm"
+          >
+            <option>Signing the petition</option>
+            <option>Volunteering</option>
+            <option>Hosting a petition signing event</option>
+            <option>Making a donation</option>
+            <option>General inquiry</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows={4}
+            required
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            className="form-input w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-xl bg-white/50 dark:bg-slate-700/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent resize-none backdrop-blur-sm"
+            placeholder="How can CJ help you?"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={formState === 'submitting'}
+          className="btn-glow w-full bg-gradient-to-r from-[#c9a227] to-[#dbb73a] hover:from-[#dbb73a] hover:to-[#c9a227] text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-[1.02] shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {formState === 'submitting' ? (
+            <>
+              <Icons.Loader />
+              Sending...
+            </>
+          ) : (
+            <>
+              Send Message
+              <Icons.Send />
+            </>
+          )}
+        </button>
+      </form>
     </div>
   );
 }
@@ -147,19 +332,25 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900">
+    <div className="min-h-screen bg-white dark:bg-slate-900 relative">
+      {/* Floating Orbs Background */}
+      <FloatingOrbs />
+
+      {/* Grid Pattern Overlay */}
+      <div className="fixed inset-0 grid-pattern pointer-events-none z-0" />
+
       {/* Skip Link */}
       <a href="#main" className="skip-link">
         Skip to main content
       </a>
 
       {/* Navigation */}
-      <header className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 z-50">
+      <header className="fixed top-0 left-0 right-0 glass bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-[#1e3a5f] rounded-full flex items-center justify-center">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
                 <span className="text-white font-bold text-lg md:text-xl">CJ</span>
               </div>
               <div className="hidden sm:block">
@@ -174,14 +365,14 @@ export default function Home() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-slate-600 dark:text-slate-300 hover:text-[#1e3a5f] dark:hover:text-[#c9a227] font-medium transition-colors"
+                  className="text-slate-600 dark:text-slate-300 hover:text-[#1e3a5f] dark:hover:text-[#c9a227] font-medium transition-all hover:scale-105"
                 >
                   {link.label}
                 </a>
               ))}
               <a
                 href="#petition"
-                className="bg-[#c9a227] hover:bg-[#dbb73a] text-white px-6 py-2.5 rounded-full font-bold transition-all hover:scale-105"
+                className="btn-glow bg-gradient-to-r from-[#c9a227] to-[#dbb73a] text-white px-6 py-2.5 rounded-full font-bold transition-all hover:scale-105 shadow-lg"
               >
                 Sign Now
               </a>
@@ -199,7 +390,7 @@ export default function Home() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <nav className="md:hidden py-4 border-t border-slate-200 dark:border-slate-700">
+            <nav className="md:hidden py-4 border-t border-slate-200/50 dark:border-slate-700/50">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
@@ -213,7 +404,7 @@ export default function Home() {
               <a
                 href="#petition"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block mt-4 bg-[#c9a227] text-white text-center px-6 py-3 rounded-full font-bold"
+                className="block mt-4 bg-gradient-to-r from-[#c9a227] to-[#dbb73a] text-white text-center px-6 py-3 rounded-full font-bold"
               >
                 Sign Petition
               </a>
@@ -222,18 +413,14 @@ export default function Home() {
         </div>
       </header>
 
-      <main id="main">
+      <main id="main" className="relative z-10">
         {/* Hero Section */}
-        <section className="pt-24 md:pt-32 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-          {/* Background elements */}
-          <div className="absolute top-20 right-0 w-96 h-96 bg-[#1e3a5f] rounded-full mix-blend-multiply filter blur-3xl opacity-10 dark:opacity-20" />
-          <div className="absolute bottom-20 left-0 w-96 h-96 bg-[#c9a227] rounded-full mix-blend-multiply filter blur-3xl opacity-10 dark:opacity-20" />
-
+        <section className="pt-24 md:pt-32 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-visible">
           <div className="max-w-7xl mx-auto relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Text Content */}
               <div className="space-y-6 text-center lg:text-left animate-fadeInLeft">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/50 rounded-full border border-[#1e3a5f]/20 dark:border-[#c9a227]/30 text-[#1e3a5f] dark:text-[#c9a227]">
+                <div className="inline-flex items-center gap-2 px-4 py-2 glass bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full border border-[#1e3a5f]/20 dark:border-[#c9a227]/30 text-[#1e3a5f] dark:text-[#c9a227]">
                   <Icons.Flag />
                   <span className="text-sm font-semibold">
                     District 3 • Sandy Creek
@@ -242,7 +429,7 @@ export default function Home() {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1e3a5f] dark:text-white leading-tight">
                   A Public Servant,{" "}
-                  <span className="text-[#c9a227]">Not a Politician</span>
+                  <span className="gradient-text">Not a Politician</span>
                 </h1>
 
                 <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 font-medium">
@@ -257,36 +444,59 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
                   <a
                     href="#petition"
-                    className="inline-flex items-center justify-center gap-2 bg-[#c9a227] hover:bg-[#dbb73a] text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="btn-glow inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#c9a227] to-[#dbb73a] text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-xl hover:shadow-2xl"
                   >
                     Sign the Petition
                     <Icons.ArrowRight />
                   </a>
                   <a
                     href="#about"
-                    className="inline-flex items-center justify-center gap-2 border-2 border-[#1e3a5f] dark:border-slate-600 text-[#1e3a5f] dark:text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:bg-[#1e3a5f] hover:text-white"
+                    className="inline-flex items-center justify-center gap-2 glass border-2 border-[#1e3a5f]/30 dark:border-slate-600 text-[#1e3a5f] dark:text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:bg-[#1e3a5f] hover:text-white hover:border-[#1e3a5f]"
                   >
                     Meet CJ
                   </a>
                 </div>
               </div>
 
-              {/* Hero Image */}
-              <div className="flex justify-center animate-fadeInUp pb-8">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f] to-[#c9a227] rounded-3xl blur-2xl opacity-30 animate-pulse-glow" />
-                  <div className="relative w-72 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[480px] bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-700 rounded-3xl overflow-hidden border-4 border-white dark:border-slate-700 shadow-2xl">
-                    <Image
-                      src="/cj-turrentine.png"
-                      alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
-                      fill
-                      className="object-cover object-top"
-                      sizes="(max-width: 640px) 288px, (max-width: 768px) 320px, 384px"
-                      priority
-                    />
+              {/* Hero Image - Dynamic Breakout Effect */}
+              <div className="flex justify-center animate-fadeInUp lg:pb-0 pb-8">
+                <div className="relative hero-image-container">
+                  {/* Glow effect behind */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f] to-[#c9a227] rounded-3xl blur-3xl opacity-40 animate-pulse-glow scale-95" />
+
+                  {/* Main container with breakout effect */}
+                  <div className="relative">
+                    {/* Background panel */}
+                    <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-gradient-to-br from-[#1e3a5f] via-[#1e3a5f] to-[#16293d] rounded-3xl shadow-2xl overflow-hidden">
+                      {/* Decorative elements inside panel */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9a227] rounded-full blur-2xl" />
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full blur-xl" />
+                      </div>
+                      {/* Text inside panel */}
+                      <div className="absolute bottom-6 left-6 right-6 text-white z-10">
+                        <p className="text-sm opacity-70">Vance County</p>
+                        <p className="text-xl font-bold">District 3 Commissioner</p>
+                      </div>
+                    </div>
+
+                    {/* CJ Image breaking out of the panel */}
+                    <div className="absolute -top-16 sm:-top-20 md:-top-24 left-1/2 -translate-x-1/2 w-64 sm:w-72 md:w-80 hero-image-breakout">
+                      <Image
+                        src="/cj-turrentine.png"
+                        alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
+                        width={320}
+                        height={400}
+                        className="object-contain drop-shadow-2xl"
+                        priority
+                      />
+                    </div>
                   </div>
-                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-[#1e3a5f] text-white px-4 py-2 sm:px-6 rounded-full shadow-lg whitespace-nowrap text-sm sm:text-base">
-                    <span className="text-[#c9a227] font-bold">District 3</span> • Sandy Creek
+
+                  {/* Floating badge */}
+                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 glass bg-white/90 dark:bg-slate-800/90 px-4 py-2 sm:px-6 rounded-full shadow-xl whitespace-nowrap text-sm sm:text-base animate-float">
+                    <span className="text-[#c9a227] font-bold">District 3</span>
+                    <span className="text-slate-600 dark:text-slate-300"> • Sandy Creek</span>
                   </div>
                 </div>
               </div>
@@ -295,8 +505,12 @@ export default function Home() {
         </section>
 
         {/* Three Promises Banner */}
-        <section className="bg-[#1e3a5f] py-12 px-4">
-          <div className="max-w-7xl mx-auto">
+        <section className="bg-gradient-to-r from-[#1e3a5f] via-[#1e3a5f] to-[#16293d] py-12 px-4 relative overflow-hidden">
+          {/* Decorative shapes */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-[#c9a227]/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+
+          <div className="max-w-7xl mx-auto relative z-10">
             <h2 className="text-center text-white text-2xl md:text-3xl font-bold mb-8">
               Three Promises to District 3
             </h2>
@@ -308,9 +522,9 @@ export default function Home() {
               ].map((promise, i) => (
                 <div
                   key={promise.title}
-                  className={`bg-white/10 backdrop-blur rounded-2xl p-6 text-center animate-fadeInUp stagger-${i + 1}`}
+                  className={`glass bg-white/10 rounded-2xl p-6 text-center card-hover animate-fadeInUp stagger-${i + 1}`}
                 >
-                  <div className="w-16 h-16 mx-auto mb-4 bg-[#c9a227] rounded-full flex items-center justify-center text-white">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#c9a227] to-[#dbb73a] rounded-full flex items-center justify-center text-white shadow-lg">
                     <Icons.CheckCircle />
                   </div>
                   <h3 className="text-white text-xl font-bold mb-2">{promise.title}</h3>
@@ -322,10 +536,10 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-800/50">
+        <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fadeInUp">
-              <span className="inline-block px-4 py-2 bg-[#c9a227]/20 text-[#9a7b1d] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/10 text-[#9a7b1d] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4 border border-[#c9a227]/20">
                 About CJ
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white mb-4">
@@ -339,9 +553,9 @@ export default function Home() {
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6 animate-fadeInLeft">
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg card-hover">
+                <div className="glass-card rounded-2xl p-8 shadow-lg card-hover">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#1e3a5f] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg">
                       <Icons.Flag />
                     </div>
                     <div>
@@ -357,9 +571,9 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg card-hover">
+                <div className="glass-card rounded-2xl p-8 shadow-lg card-hover">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#c9a227] rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#c9a227] to-[#dbb73a] rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg">
                       <Icons.Heart />
                     </div>
                     <div>
@@ -374,9 +588,9 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg card-hover">
+                <div className="glass-card rounded-2xl p-8 shadow-lg card-hover">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#10b981] rounded-xl flex items-center justify-center flex-shrink-0 text-white">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#10b981] to-[#059669] rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg">
                       <Icons.Users />
                     </div>
                     <div>
@@ -393,12 +607,16 @@ export default function Home() {
               </div>
 
               <div className="animate-fadeInUp">
-                <div className="bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-3xl p-8 md:p-12 text-white">
-                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <div className="bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
+                  {/* Decorative elements */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9a227]/20 rounded-full blur-2xl" />
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-xl" />
+
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 relative z-10">
                     <Icons.Award />
                     Leadership Experience
                   </h3>
-                  <ul className="space-y-4">
+                  <ul className="space-y-4 relative z-10">
                     {[
                       "Chair, Henderson Community-Wide Advisory Committee",
                       "Vance Charter School Board of Directors",
@@ -409,12 +627,12 @@ export default function Home() {
                       "Sam Watkins Visionary Award Recipient (2025)",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <Icons.CheckCircle />
+                        <span className="text-[#c9a227]"><Icons.CheckCircle /></span>
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-8 p-6 bg-white/10 rounded-xl">
+                  <div className="mt-8 p-6 glass bg-white/10 rounded-xl relative z-10">
                     <p className="italic text-white/90">
                       &ldquo;Most Likely to Be an Elected Official&rdquo;
                     </p>
@@ -429,10 +647,10 @@ export default function Home() {
         </section>
 
         {/* Platform Section */}
-        <section id="platform" className="py-20 px-4 sm:px-6 lg:px-8">
+        <section id="platform" className="py-20 px-4 sm:px-6 lg:px-8 mesh-gradient">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fadeInUp">
-              <span className="inline-block px-4 py-2 bg-[#1e3a5f]/10 text-[#1e3a5f] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-2 bg-[#1e3a5f]/10 text-[#1e3a5f] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4 border border-[#1e3a5f]/20">
                 The Platform
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white mb-4">
@@ -450,45 +668,45 @@ export default function Home() {
                   icon: <Icons.Shield />,
                   title: "Public Safety First",
                   desc: "As the #1 priority, CJ will build on his Pathways 2 Peace work to address gun violence and make our streets safer for families.",
-                  color: "bg-red-500",
+                  gradient: "from-red-500 to-red-600",
                 },
                 {
                   icon: <Icons.GraduationCap />,
                   title: "Education & Youth",
                   desc: "Investing in young people through mentorship, trades education, and creating safe spaces. Strong families build strong communities.",
-                  color: "bg-[#1e3a5f]",
+                  gradient: "from-[#1e3a5f] to-[#16293d]",
                 },
                 {
                   icon: <Icons.TrendingUp />,
                   title: "Economic Development",
                   desc: "Being a 'cheerleader' for Vance County—leveraging Tier 1 status to attract businesses, infrastructure, and good jobs.",
-                  color: "bg-[#c9a227]",
+                  gradient: "from-[#c9a227] to-[#dbb73a]",
                 },
                 {
                   icon: <Icons.Home />,
                   title: "Community Revitalization",
                   desc: "Extending the Chestnut Street Park model to other neighborhoods, investing in the places that need it most.",
-                  color: "bg-[#10b981]",
+                  gradient: "from-[#10b981] to-[#059669]",
                 },
                 {
                   icon: <Icons.Users />,
                   title: "Regional Collaboration",
                   desc: "Working with Franklin, Warren, and Granville counties to bring shared resources and opportunities to our region.",
-                  color: "bg-purple-500",
+                  gradient: "from-purple-500 to-purple-600",
                 },
                 {
                   icon: <Icons.Heart />,
                   title: "Fiscal Responsibility",
                   desc: "Smart investments over big spending—like recommending phased jail renovation instead of a $45M new facility.",
-                  color: "bg-orange-500",
+                  gradient: "from-orange-500 to-orange-600",
                 },
               ].map((item, i) => (
                 <div
                   key={item.title}
-                  className={`bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg card-hover animate-fadeInUp`}
+                  className="glass-card rounded-2xl p-8 shadow-lg card-3d animate-fadeInUp"
                   style={{ animationDelay: `${i * 0.1}s` }}
                 >
-                  <div className={`w-14 h-14 ${item.color} rounded-2xl flex items-center justify-center text-white mb-6`}>
+                  <div className={`w-14 h-14 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg`}>
                     {item.icon}
                   </div>
                   <h3 className="text-xl font-bold text-[#1e3a5f] dark:text-white mb-3">{item.title}</h3>
@@ -500,10 +718,10 @@ export default function Home() {
         </section>
 
         {/* Achievements Section */}
-        <section id="achievements" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-800/50">
+        <section id="achievements" className="py-20 px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fadeInUp">
-              <span className="inline-block px-4 py-2 bg-[#c9a227]/20 text-[#9a7b1d] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/10 text-[#9a7b1d] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4 border border-[#c9a227]/20">
                 Proven Results
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white mb-4">
@@ -516,9 +734,10 @@ export default function Home() {
 
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Chestnut Street Park */}
-              <div className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInLeft">
-                <div className="h-48 bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center">
-                  <div className="text-center text-white">
+              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInLeft">
+                <div className="h-48 bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black/10" />
+                  <div className="text-center text-white relative z-10">
                     <div className="text-5xl font-black">$140K</div>
                     <div className="text-lg mt-2">Raised for Community</div>
                   </div>
@@ -554,9 +773,10 @@ export default function Home() {
               </div>
 
               {/* Pathways 2 Peace */}
-              <div className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
-                <div className="h-48 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] flex items-center justify-center">
-                  <div className="text-center text-white">
+              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
+                <div className="h-48 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black/10" />
+                  <div className="text-center text-white relative z-10">
                     <Icons.Shield />
                     <div className="text-3xl font-black mt-4">Pathways 2 Peace</div>
                     <div className="text-lg mt-2">501(c)(3) Coalition</div>
@@ -592,9 +812,10 @@ export default function Home() {
               </div>
 
               {/* Hope House */}
-              <div className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
-                <div className="h-48 bg-gradient-to-br from-[#c9a227] to-[#a07d1a] flex items-center justify-center">
-                  <div className="text-center text-white">
+              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
+                <div className="h-48 bg-gradient-to-br from-[#c9a227] to-[#a07d1a] flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black/10" />
+                  <div className="text-center text-white relative z-10">
                     <Icons.Home />
                     <div className="text-3xl font-black mt-4">The Hope House</div>
                     <div className="text-lg mt-2">Transitional Housing</div>
@@ -626,15 +847,16 @@ export default function Home() {
               </div>
 
               {/* District 3 Context */}
-              <div className="bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp p-8 text-white">
-                <h3 className="text-2xl font-bold mb-4">
+              <div className="bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp p-8 text-white relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9a227]/20 rounded-full blur-2xl" />
+                <h3 className="text-2xl font-bold mb-4 relative z-10">
                   About District 3 (Sandy Creek)
                 </h3>
-                <p className="text-white/80 mb-6">
+                <p className="text-white/80 mb-6 relative z-10">
                   District 3 covers rural eastern Vance County with 5,732 residents. It&apos;s one of the county&apos;s
                   most diverse districts: 43.8% white, 41.3% Black, and 13.6% Hispanic.
                 </p>
-                <div className="bg-white/10 rounded-2xl p-6">
+                <div className="glass bg-white/10 rounded-2xl p-6 relative z-10">
                   <p className="text-lg font-medium mb-4">
                     The 2022 primary was decided by just <span className="text-[#c9a227] font-bold">10 votes</span>.
                     Your signature—and your vote—truly matters.
@@ -650,10 +872,14 @@ export default function Home() {
         </section>
 
         {/* Petition Section */}
-        <section id="petition" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#1e3a5f] to-[#16293d]">
-          <div className="max-w-4xl mx-auto text-center">
+        <section id="petition" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#1e3a5f] via-[#1e3a5f] to-[#16293d] relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-0 w-96 h-96 bg-[#c9a227]/10 rounded-full blur-3xl animate-float-slow" />
+          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl animate-float-reverse" />
+
+          <div className="max-w-4xl mx-auto text-center relative z-10">
             <div className="animate-fadeInUp">
-              <span className="inline-block px-4 py-2 bg-[#c9a227] text-white rounded-full text-sm font-bold uppercase tracking-wider mb-6">
+              <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#c9a227] to-[#dbb73a] text-white rounded-full text-sm font-bold uppercase tracking-wider mb-6 shadow-lg">
                 Urgent: Deadline Approaching
               </span>
 
@@ -667,20 +893,20 @@ export default function Home() {
               </p>
 
               {/* Countdown */}
-              <div className="bg-white/10 backdrop-blur rounded-3xl p-8 mb-8">
+              <div className="glass bg-white/10 rounded-3xl p-8 mb-8">
                 <p className="text-white/80 mb-6 font-medium">Time remaining to submit signatures:</p>
                 <Countdown />
               </div>
 
-              <div className="bg-white rounded-3xl p-8 md:p-12 text-left">
-                <h3 className="text-2xl font-bold text-[#1e3a5f] mb-6 text-center">
+              <div className="glass-card bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 text-left">
+                <h3 className="text-2xl font-bold text-[#1e3a5f] dark:text-white mb-6 text-center">
                   How to Sign the Petition
                 </h3>
 
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
                   <div>
-                    <h4 className="font-bold text-[#1e3a5f] mb-3">Who Can Sign?</h4>
-                    <ul className="space-y-2 text-slate-600">
+                    <h4 className="font-bold text-[#1e3a5f] dark:text-white mb-3">Who Can Sign?</h4>
+                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                       <li className="flex items-start gap-2">
                         <span className="text-[#10b981] flex-shrink-0 mt-0.5"><Icons.CheckCircle /></span>
                         <span>Registered voters in District 3</span>
@@ -696,10 +922,10 @@ export default function Home() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold text-[#1e3a5f] mb-3">Where to Sign?</h4>
-                    <ul className="space-y-2 text-slate-600">
+                    <h4 className="font-bold text-[#1e3a5f] dark:text-white mb-3">Where to Sign?</h4>
+                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                       <li className="flex items-start gap-2">
-                        <span className="text-[#1e3a5f] flex-shrink-0 mt-0.5"><Icons.MapPin /></span>
+                        <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0 mt-0.5"><Icons.MapPin /></span>
                         <span>Exquizid Cuts Barbershop, South Garnett Street</span>
                       </li>
                       <li className="flex items-start gap-2">
@@ -717,12 +943,12 @@ export default function Home() {
                 <div className="text-center">
                   <a
                     href="#contact"
-                    className="inline-flex items-center gap-2 bg-[#c9a227] hover:bg-[#dbb73a] text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-lg"
+                    className="btn-glow inline-flex items-center gap-2 bg-gradient-to-r from-[#c9a227] to-[#dbb73a] text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-xl"
                   >
                     Contact CJ to Sign
                     <Icons.ArrowRight />
                   </a>
-                  <p className="text-sm text-slate-500 mt-4">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
                     Every signature counts. Help change the narrative for Vance County.
                   </p>
                 </div>
@@ -732,24 +958,24 @@ export default function Home() {
         </section>
 
         {/* Quote Section */}
-        <section className="py-16 px-4 bg-white dark:bg-slate-900">
-          <div className="max-w-4xl mx-auto text-center animate-fadeInUp">
-            <div className="text-5xl text-[#c9a227] mb-6">&ldquo;</div>
+        <section className="py-16 px-4 relative overflow-hidden">
+          <div className="max-w-4xl mx-auto text-center animate-fadeInUp relative z-10">
+            <div className="text-6xl text-[#c9a227] mb-6 opacity-50">&ldquo;</div>
             <blockquote className="text-2xl md:text-3xl font-medium text-[#1e3a5f] dark:text-white mb-6 italic">
               I may not have all the answers, but I pledge to lead with integrity and always put people first.
             </blockquote>
-            <cite className="text-slate-600 dark:text-slate-400 not-italic">
+            <cite className="text-slate-600 dark:text-slate-400 not-italic font-bold">
               — CJ Turrentine
             </cite>
           </div>
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-800/50">
+        <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 mesh-gradient relative">
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12">
               <div className="animate-fadeInLeft">
-                <span className="inline-block px-4 py-2 bg-[#1e3a5f]/10 text-[#1e3a5f] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+                <span className="inline-block px-4 py-2 bg-[#1e3a5f]/10 text-[#1e3a5f] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4 border border-[#1e3a5f]/20">
                   Get Involved
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white mb-6">
@@ -761,32 +987,32 @@ export default function Home() {
                 </p>
 
                 <div className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[#1e3a5f] rounded-xl flex items-center justify-center text-white">
+                  <div className="flex items-center gap-4 group">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                       <Icons.Phone />
                     </div>
                     <div>
                       <p className="text-sm text-slate-500 dark:text-slate-400">Phone</p>
-                      <a href="tel:+12522049334" className="text-lg font-bold text-[#1e3a5f] dark:text-white hover:text-[#c9a227]">
+                      <a href="tel:+12522049334" className="text-lg font-bold text-[#1e3a5f] dark:text-white hover:text-[#c9a227] transition-colors">
                         (252) 204-9334
                       </a>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[#c9a227] rounded-xl flex items-center justify-center text-white">
+                  <div className="flex items-center gap-4 group">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#c9a227] to-[#dbb73a] rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                       <Icons.Mail />
                     </div>
                     <div>
                       <p className="text-sm text-slate-500 dark:text-slate-400">Email</p>
-                      <a href="mailto:cturrentinejr@gmail.com" className="text-lg font-bold text-[#1e3a5f] dark:text-white hover:text-[#c9a227]">
+                      <a href="mailto:cturrentinejr@gmail.com" className="text-lg font-bold text-[#1e3a5f] dark:text-white hover:text-[#c9a227] transition-colors">
                         cturrentinejr@gmail.com
                       </a>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[#10b981] rounded-xl flex items-center justify-center text-white">
+                  <div className="flex items-center gap-4 group">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#10b981] to-[#059669] rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                       <Icons.MapPin />
                     </div>
                     <div>
@@ -800,71 +1026,7 @@ export default function Home() {
               </div>
 
               <div className="animate-fadeInUp">
-                <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl">
-                  <h3 className="text-2xl font-bold text-[#1e3a5f] dark:text-white mb-6">
-                    Send a Message
-                  </h3>
-                  <form className="space-y-6" action={`mailto:cturrentinejr@gmail.com`} method="post" encType="text/plain">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        Your Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent"
-                        placeholder="John Doe"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="interest" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        I&apos;m Interested In
-                      </label>
-                      <select
-                        id="interest"
-                        name="interest"
-                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent"
-                      >
-                        <option>Signing the petition</option>
-                        <option>Volunteering</option>
-                        <option>Hosting a petition signing event</option>
-                        <option>Making a donation</option>
-                        <option>General inquiry</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={4}
-                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c9a227] focus:border-transparent resize-none"
-                        placeholder="How can CJ help you?"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full bg-[#c9a227] hover:bg-[#dbb73a] text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-lg"
-                    >
-                      Send Message
-                    </button>
-                  </form>
-                </div>
+                <ContactForm />
               </div>
             </div>
           </div>
@@ -872,12 +1034,15 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#1e3a5f] text-white py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
+      <footer className="bg-gradient-to-br from-[#1e3a5f] to-[#0f172a] text-white py-12 px-4 relative overflow-hidden">
+        {/* Decorative element */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a227]/10 rounded-full blur-3xl" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
                   <span className="text-[#1e3a5f] font-bold text-xl">CJ</span>
                 </div>
                 <div>
@@ -893,11 +1058,11 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-white/70">
-                <li><a href="#about" className="hover:text-[#c9a227]">About CJ</a></li>
-                <li><a href="#platform" className="hover:text-[#c9a227]">Platform</a></li>
-                <li><a href="#achievements" className="hover:text-[#c9a227]">Achievements</a></li>
-                <li><a href="#petition" className="hover:text-[#c9a227]">Sign Petition</a></li>
-                <li><a href="#contact" className="hover:text-[#c9a227]">Contact</a></li>
+                <li><a href="#about" className="hover:text-[#c9a227] transition-colors">About CJ</a></li>
+                <li><a href="#platform" className="hover:text-[#c9a227] transition-colors">Platform</a></li>
+                <li><a href="#achievements" className="hover:text-[#c9a227] transition-colors">Achievements</a></li>
+                <li><a href="#petition" className="hover:text-[#c9a227] transition-colors">Sign Petition</a></li>
+                <li><a href="#contact" className="hover:text-[#c9a227] transition-colors">Contact</a></li>
               </ul>
             </div>
 
@@ -905,13 +1070,31 @@ export default function Home() {
               <h4 className="font-bold mb-4">Contact</h4>
               <ul className="space-y-2 text-white/70">
                 <li>
-                  <a href="tel:+12522049334" className="hover:text-[#c9a227]">(252) 204-9334</a>
+                  <a href="tel:+12522049334" className="hover:text-[#c9a227] transition-colors">(252) 204-9334</a>
                 </li>
                 <li>
-                  <a href="mailto:cturrentinejr@gmail.com" className="hover:text-[#c9a227]">cturrentinejr@gmail.com</a>
+                  <a href="mailto:cturrentinejr@gmail.com" className="hover:text-[#c9a227] transition-colors">cturrentinejr@gmail.com</a>
                 </li>
                 <li>Henderson, NC 27537</li>
               </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold mb-4">Website By</h4>
+              <a
+                href="https://willsigmund.media"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-white/70 hover:text-[#c9a227] transition-colors group"
+              >
+                <span className="font-medium">WillSigmund Media</span>
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+              <p className="text-white/50 text-sm mt-2">
+                Digital strategy & web development
+              </p>
             </div>
           </div>
 
