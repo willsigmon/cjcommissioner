@@ -480,11 +480,6 @@ export default function Home() {
                       className="relative z-10 w-80 sm:w-96 md:w-[28rem] lg:w-[32rem] h-auto drop-shadow-2xl"
                       priority
                     />
-                    {/* Caption overlay */}
-                    <div className="absolute bottom-8 left-4 right-4 text-white z-20">
-                      <p className="text-xs opacity-80">Vance County</p>
-                      <p className="text-base sm:text-lg font-bold">District 3 • Sandy Creek</p>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -493,7 +488,7 @@ export default function Home() {
         </section>
 
         {/* Three Promises Banner */}
-        <section className="bg-gradient-to-r from-[#1e3a5f] via-[#1e3a5f] to-[#16293d] py-12 px-4 relative overflow-hidden">
+        <section className="bg-gradient-to-r from-[#1e3a5f] via-[#1e3a5f] to-[#16293d] py-16 px-4 relative overflow-hidden">
           {/* Decorative shapes */}
           <div className="absolute top-0 left-0 w-64 h-64 bg-[#c9a227]/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
@@ -578,7 +573,7 @@ export default function Home() {
 
                 <div className="glass-card rounded-2xl p-8 shadow-lg card-hover">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#10b981] to-[#059669] rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg">
                       <Icons.Users />
                     </div>
                     <div>
@@ -1049,7 +1044,7 @@ export default function Home() {
         </section>
 
         {/* Quote Section */}
-        <section className="py-16 px-4 relative overflow-hidden">
+        <section className="py-20 px-4 relative overflow-hidden">
           <div className="max-w-4xl mx-auto text-center animate-fadeInUp relative z-10">
             <div className="text-6xl text-[#c9a227] mb-6 opacity-50">&ldquo;</div>
             <blockquote className="text-2xl md:text-3xl font-medium text-[#1e3a5f] dark:text-white mb-6 italic">
@@ -1103,7 +1098,7 @@ export default function Home() {
                   </div>
 
                   <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#10b981] to-[#059669] rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                       <Icons.MapPin />
                     </div>
                     <div>
@@ -1130,7 +1125,7 @@ export default function Home() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a227]/10 rounded-full blur-3xl" />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
