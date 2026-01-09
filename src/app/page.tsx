@@ -356,7 +356,7 @@ export default function Home() {
                   alt="CJ"
                   width={48}
                   height={48}
-                  className="w-full h-full object-cover object-[center_20%] scale-[1.6]"
+                  className="w-full h-full object-cover object-[center_25%] scale-[1.2]"
                 />
               </div>
               <div className="flex flex-col">
