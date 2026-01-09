@@ -458,14 +458,14 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Hero Image - Dynamic Breakout Effect */}
+              {/* Hero Image - CJ against panel */}
               <div className="flex justify-center animate-fadeInUp lg:pb-0 pb-8">
                 <div className="relative hero-image-container">
                   {/* Glow effect behind */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f] to-[#c9a227] rounded-3xl blur-3xl opacity-40 animate-pulse-glow scale-95" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f] to-[#c9a227] rounded-3xl blur-3xl opacity-40 animate-pulse-glow scale-95" style={{ top: '40%' }} />
 
-                  {/* Main container with breakout effect */}
-                  <div className="relative">
+                  {/* Main container - CJ's bottom aligns with panel bottom */}
+                  <div className="relative pt-32 sm:pt-40 md:pt-48">
                     {/* Background panel */}
                     <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-gradient-to-br from-[#1e3a5f] via-[#1e3a5f] to-[#16293d] rounded-3xl shadow-2xl overflow-hidden">
                       {/* Decorative elements inside panel */}
@@ -473,15 +473,15 @@ export default function Home() {
                         <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9a227] rounded-full blur-2xl" />
                         <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full blur-xl" />
                       </div>
-                      {/* Text inside panel */}
-                      <div className="absolute bottom-6 left-6 right-6 text-white z-10">
-                        <p className="text-sm opacity-70">Vance County</p>
-                        <p className="text-xl font-bold">District 3 Commissioner</p>
+                      {/* Text inside panel - bottom left */}
+                      <div className="absolute bottom-4 left-4 right-4 text-white z-10">
+                        <p className="text-xs opacity-70">Vance County</p>
+                        <p className="text-base sm:text-lg font-bold">District 3 • Sandy Creek</p>
                       </div>
                     </div>
 
-                    {/* CJ Image breaking out of the panel */}
-                    <div className="absolute -top-16 sm:-top-20 md:-top-24 left-1/2 -translate-x-1/2 w-64 sm:w-72 md:w-80 hero-image-breakout">
+                    {/* CJ Image - bottom aligned with panel bottom */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 sm:w-72 md:w-80">
                       <Image
                         src="/cj-turrentine.png"
                         alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
@@ -491,12 +491,6 @@ export default function Home() {
                         priority
                       />
                     </div>
-                  </div>
-
-                  {/* Floating badge */}
-                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 glass bg-white/90 dark:bg-slate-800/90 px-4 py-2 sm:px-6 rounded-full shadow-xl whitespace-nowrap text-sm sm:text-base animate-float">
-                    <span className="text-[#c9a227] font-bold">District 3</span>
-                    <span className="text-slate-600 dark:text-slate-300"> • Sandy Creek</span>
                   </div>
                 </div>
               </div>

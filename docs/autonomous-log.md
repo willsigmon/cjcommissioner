@@ -22,10 +22,37 @@
   - Improved contrast for dark/light modes
   - Better responsive sizing on mobile
 
+---
+
+## Session: 2026-01-09 (Continued)
+
+### Web 3.0 Design Upgrade
+- **Goal**: Dynamic headshot, working contact form, animations, glassmorphism
+- **Commit**: 387a962
+- **Deployed**: https://cjcommissioner.vercel.app
+
+### Changes Shipped
+1. **Dynamic Hero**: CJ's headshot breaks out of panel with gradient fade mask
+2. **Working Contact Form**: Formspree integration + mailto fallback
+3. **WillSigmund Media Footer**: Credit link added
+4. **Motion Animations**:
+   - Floating orbs (3 animated background blobs)
+   - Morphing shapes, gradient shifts
+   - Pulse effects on countdown timer
+5. **Web 3.0 Design**:
+   - Glassmorphism cards (frosted glass effect)
+   - 3D card transforms on hover
+   - Button glow sweep effects
+   - Mesh gradient backgrounds
+   - Noise texture overlay for depth
+
+---
+
 ## Session Summary
 
 ### Shipped
-- Photo integration + contrast fixes — commit afc790c pushed to main
+- Photo integration + contrast fixes — commit afc790c
+- Web 3.0 design upgrade — commit 387a962
 
 ### In Progress
 - None
