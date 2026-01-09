@@ -348,14 +348,20 @@ export default function Home() {
       <header className="fixed top-0 left-0 right-0 glass bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
+            {/* Logo with mini CJ headshot */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
-                <span className="text-white font-bold text-lg md:text-xl">CJ</span>
+              <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow ring-2 ring-[#1e3a5f] dark:ring-[#c9a227]">
+                <Image
+                  src="/cj-turrentine.png"
+                  alt="CJ"
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-cover object-top scale-150 translate-y-1"
+                />
               </div>
-              <div className="hidden sm:block">
-                <div className="font-bold text-[#1e3a5f] dark:text-white text-lg">CJ Turrentine</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">For Commissioner</div>
+              <div className="flex flex-col">
+                <span className="text-lg md:text-xl font-black text-[#1e3a5f] dark:text-white leading-tight">CJ</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">for Commissioner</span>
               </div>
             </Link>
 
@@ -458,38 +464,26 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Hero Image - CJ against panel */}
+              {/* Hero Image - Custom composite with panel baked in */}
               <div className="flex justify-center animate-fadeInUp lg:pb-0 pb-8">
                 <div className="relative hero-image-container">
                   {/* Glow effect behind */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f] to-[#c9a227] rounded-3xl blur-3xl opacity-40 animate-pulse-glow scale-95" style={{ top: '40%' }} />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f] to-[#c9a227] rounded-3xl blur-3xl opacity-30 animate-pulse-glow" />
 
-                  {/* Main container - CJ's bottom aligns with panel bottom */}
-                  <div className="relative pt-32 sm:pt-40 md:pt-48">
-                    {/* Background panel */}
-                    <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-gradient-to-br from-[#1e3a5f] via-[#1e3a5f] to-[#16293d] rounded-3xl shadow-2xl overflow-hidden">
-                      {/* Decorative elements inside panel */}
-                      <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9a227] rounded-full blur-2xl" />
-                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full blur-xl" />
-                      </div>
-                      {/* Text inside panel - bottom left */}
-                      <div className="absolute bottom-4 left-4 right-4 text-white z-10">
-                        <p className="text-xs opacity-70">Vance County</p>
-                        <p className="text-base sm:text-lg font-bold">District 3 • Sandy Creek</p>
-                      </div>
-                    </div>
-
-                    {/* CJ Image - head breaks out well above panel */}
-                    <div className="absolute -bottom-12 sm:-bottom-16 md:-bottom-20 left-1/2 -translate-x-1/2 w-80 sm:w-96 md:w-[28rem]">
-                      <Image
-                        src="/cj-turrentine.png"
-                        alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
-                        width={448}
-                        height={560}
-                        className="object-contain drop-shadow-2xl"
-                        priority
-                      />
+                  {/* Main image with caption */}
+                  <div className="relative">
+                    <Image
+                      src="/cj-hero-composite.png"
+                      alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
+                      width={500}
+                      height={600}
+                      className="relative z-10 w-72 sm:w-80 md:w-96 h-auto drop-shadow-2xl"
+                      priority
+                    />
+                    {/* Caption overlay */}
+                    <div className="absolute bottom-8 left-4 right-4 text-white z-20">
+                      <p className="text-xs opacity-80">Vance County</p>
+                      <p className="text-base sm:text-lg font-bold">District 3 • Sandy Creek</p>
                     </div>
                   </div>
                 </div>
@@ -617,7 +611,7 @@ export default function Home() {
                       "Director, Community Partners of Hope Men's Shelter (5 years)",
                       "Henderson-Vance Crime Stoppers Board Member",
                       "Leadership Vance Class of 2025 Graduate",
-                      "Owner, Exquizid Cuts Barbershop (since 2010)",
+                      "PR & Community Ambassador, Exquizid Cuts Barbershop",
                       "Sam Watkins Visionary Award Recipient (2025)",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
@@ -861,6 +855,121 @@ export default function Home() {
                   </p>
                 </div>
               </div>
+
+              {/* District 3 Map */}
+              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
+                <div className="p-6 border-b border-slate-200/50 dark:border-slate-700/50">
+                  <h3 className="text-xl font-bold text-[#1e3a5f] dark:text-white flex items-center gap-2">
+                    <Icons.MapPin />
+                    District 3 Map
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+                    Sandy Creek Township, Eastern Vance County
+                  </p>
+                </div>
+                <div className="aspect-video relative">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103062.67850895!2d-78.45!3d36.32!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89ac7e0e8b3b8e8d%3A0x8f0a8f8b8b8b8b8b!2sVance%20County%2C%20NC!5e0!3m2!1sen!2sus!4v1234567890"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="absolute inset-0"
+                  />
+                </div>
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/50">
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    <strong>Key Areas:</strong> Sandy Creek, Dabney, Townsville, parts of Henderson
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Vance County News Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 animate-fadeInUp">
+              <span className="inline-block px-4 py-2 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm font-semibold text-[#1e3a5f] dark:text-[#c9a227] mb-4">
+                Stay Informed
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white">
+                Vance County News & Events
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl mx-auto">
+                What&apos;s happening in our community
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* News Card 1 */}
+              <div className="glass-card rounded-2xl p-6 card-hover animate-fadeInUp">
+                <div className="flex items-center gap-2 text-[#c9a227] mb-3">
+                  <Icons.Calendar />
+                  <span className="text-sm font-medium">Local Government</span>
+                </div>
+                <h3 className="font-bold text-[#1e3a5f] dark:text-white mb-2">
+                  Vance County Board of Commissioners
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  Regular meetings held first and third Mondays at 6:00 PM in the County Administration Building.
+                </p>
+                <a
+                  href="https://www.vancecounty.gov/government/board_of_commissioners/index.php"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#1e3a5f] dark:text-[#c9a227] text-sm font-medium hover:underline inline-flex items-center gap-1"
+                >
+                  View Agendas & Minutes <Icons.ArrowRight />
+                </a>
+              </div>
+
+              {/* News Card 2 */}
+              <div className="glass-card rounded-2xl p-6 card-hover animate-fadeInUp stagger-1">
+                <div className="flex items-center gap-2 text-[#c9a227] mb-3">
+                  <Icons.Users />
+                  <span className="text-sm font-medium">Community</span>
+                </div>
+                <h3 className="font-bold text-[#1e3a5f] dark:text-white mb-2">
+                  Henderson Daily Dispatch
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  Your source for local news covering Henderson, Vance County, and the surrounding area.
+                </p>
+                <a
+                  href="https://www.hendersondispatch.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#1e3a5f] dark:text-[#c9a227] text-sm font-medium hover:underline inline-flex items-center gap-1"
+                >
+                  Read Local News <Icons.ArrowRight />
+                </a>
+              </div>
+
+              {/* News Card 3 */}
+              <div className="glass-card rounded-2xl p-6 card-hover animate-fadeInUp stagger-2">
+                <div className="flex items-center gap-2 text-[#c9a227] mb-3">
+                  <Icons.TrendingUp />
+                  <span className="text-sm font-medium">Economic Development</span>
+                </div>
+                <h3 className="font-bold text-[#1e3a5f] dark:text-white mb-2">
+                  Kerr-Tar Regional COG
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  Regional planning and development resources for Vance County and surrounding areas.
+                </p>
+                <a
+                  href="https://www.kerrtarcog.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#1e3a5f] dark:text-[#c9a227] text-sm font-medium hover:underline inline-flex items-center gap-1"
+                >
+                  Explore Resources <Icons.ArrowRight />
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -934,12 +1043,37 @@ export default function Home() {
                   </div>
                 </div>
 
+                {/* Online Sign-Up Form */}
+                <div className="mb-8 p-6 bg-gradient-to-r from-[#1e3a5f]/10 to-[#c9a227]/10 dark:from-[#1e3a5f]/20 dark:to-[#c9a227]/20 rounded-2xl border-2 border-dashed border-[#c9a227]/50">
+                  <h4 className="font-bold text-[#1e3a5f] dark:text-white mb-3 text-center flex items-center justify-center gap-2">
+                    <Icons.Mail />
+                    Sign Up Online
+                  </h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 text-center mb-4">
+                    Let us know you want to sign the petition! We&apos;ll reach out to arrange an in-person signing.
+                  </p>
+                  <div className="flex justify-center">
+                    <a
+                      href="https://forms.gle/PLACEHOLDER_FORM_ID"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-glow inline-flex items-center gap-2 bg-gradient-to-r from-[#1e3a5f] to-[#16293d] text-white px-6 py-3 rounded-full font-bold transition-all hover:scale-105 shadow-lg"
+                    >
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM8.5 13a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H9a.5.5 0 0 1-.5-.5z"/>
+                      </svg>
+                      Sign Up via Google Form
+                    </a>
+                  </div>
+                </div>
+
                 <div className="text-center">
+                  <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">— or —</p>
                   <a
                     href="#contact"
                     className="btn-glow inline-flex items-center gap-2 bg-gradient-to-r from-[#c9a227] to-[#dbb73a] text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-xl"
                   >
-                    Contact CJ to Sign
+                    Contact CJ Directly
                     <Icons.ArrowRight />
                   </a>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
