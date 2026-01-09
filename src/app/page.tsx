@@ -233,9 +233,9 @@ export default function Home() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Text Content */}
               <div className="space-y-6 text-center lg:text-left animate-fadeInLeft">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full border border-[#1e3a5f]/20">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/50 rounded-full border border-[#1e3a5f]/20 dark:border-[#c9a227]/30 text-[#1e3a5f] dark:text-[#c9a227]">
                   <Icons.Flag />
-                  <span className="text-sm font-semibold text-[#1e3a5f] dark:text-[#c9a227]">
+                  <span className="text-sm font-semibold">
                     District 3 • Sandy Creek
                   </span>
                 </div>
@@ -271,18 +271,22 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Hero Image Placeholder */}
-              <div className="flex justify-center animate-fadeInUp">
+              {/* Hero Image */}
+              <div className="flex justify-center animate-fadeInUp pb-8">
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a5f] to-[#c9a227] rounded-3xl blur-2xl opacity-30 animate-pulse-glow" />
-                  <div className="relative w-80 h-96 md:w-96 md:h-[480px] bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-3xl flex items-center justify-center overflow-hidden border-4 border-white dark:border-slate-700 shadow-2xl">
-                    <div className="text-center p-8">
-                      <div className="w-32 h-32 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
-                        <span className="text-6xl font-bold text-white">CJ</span>
-                      </div>
-                      <p className="text-white/80 text-lg font-medium">CJ Turrentine</p>
-                      <p className="text-[#c9a227] font-bold mt-2">For District 3</p>
-                    </div>
+                  <div className="relative w-72 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[480px] bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-700 rounded-3xl overflow-hidden border-4 border-white dark:border-slate-700 shadow-2xl">
+                    <Image
+                      src="/cj-turrentine.png"
+                      alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
+                      fill
+                      className="object-cover object-top"
+                      sizes="(max-width: 640px) 288px, (max-width: 768px) 320px, 384px"
+                      priority
+                    />
+                  </div>
+                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-[#1e3a5f] text-white px-4 py-2 sm:px-6 rounded-full shadow-lg whitespace-nowrap text-sm sm:text-base">
+                    <span className="text-[#c9a227] font-bold">District 3</span> • Sandy Creek
                   </div>
                 </div>
               </div>
@@ -306,7 +310,7 @@ export default function Home() {
                   key={promise.title}
                   className={`bg-white/10 backdrop-blur rounded-2xl p-6 text-center animate-fadeInUp stagger-${i + 1}`}
                 >
-                  <div className="w-16 h-16 mx-auto mb-4 bg-[#c9a227] rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-[#c9a227] rounded-full flex items-center justify-center text-white">
                     <Icons.CheckCircle />
                   </div>
                   <h3 className="text-white text-xl font-bold mb-2">{promise.title}</h3>
@@ -321,7 +325,7 @@ export default function Home() {
         <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-800/50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fadeInUp">
-              <span className="inline-block px-4 py-2 bg-[#c9a227]/10 text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-2 bg-[#c9a227]/20 text-[#9a7b1d] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
                 About CJ
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white mb-4">
@@ -499,7 +503,7 @@ export default function Home() {
         <section id="achievements" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-800/50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fadeInUp">
-              <span className="inline-block px-4 py-2 bg-[#c9a227]/10 text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+              <span className="inline-block px-4 py-2 bg-[#c9a227]/20 text-[#9a7b1d] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4">
                 Proven Results
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white mb-4">
@@ -530,19 +534,19 @@ export default function Home() {
                   </p>
                   <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Six new breakaway basketball goals</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Two colorful courts representing Henderson & Vance County</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Top-5 finalist in national Bobcat contest</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Phase 2: Solar canopy, ADA bathrooms coming</span>
                     </li>
                   </ul>
@@ -568,19 +572,19 @@ export default function Home() {
                   </p>
                   <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>170+ community members at initial listening session</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Launched connect-to-henderson.com resource hub</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Partnership with NC Office of Violence Prevention</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Creating practical solutions, not just talk</span>
                     </li>
                   </ul>
@@ -606,15 +610,15 @@ export default function Home() {
                   </p>
                   <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Bridge from shelter to independence</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Financial literacy training</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Icons.CheckCircle />
+                      <span className="text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
                       <span>Life skills development</span>
                     </li>
                   </ul>
@@ -678,15 +682,15 @@ export default function Home() {
                     <h4 className="font-bold text-[#1e3a5f] mb-3">Who Can Sign?</h4>
                     <ul className="space-y-2 text-slate-600">
                       <li className="flex items-start gap-2">
-                        <Icons.CheckCircle />
+                        <span className="text-[#10b981] flex-shrink-0 mt-0.5"><Icons.CheckCircle /></span>
                         <span>Registered voters in District 3</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <Icons.CheckCircle />
+                        <span className="text-[#10b981] flex-shrink-0 mt-0.5"><Icons.CheckCircle /></span>
                         <span>Any party affiliation—Democrat, Republican, or Unaffiliated</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <Icons.CheckCircle />
+                        <span className="text-[#10b981] flex-shrink-0 mt-0.5"><Icons.CheckCircle /></span>
                         <span>Must sign in person with original signature</span>
                       </li>
                     </ul>
@@ -695,15 +699,15 @@ export default function Home() {
                     <h4 className="font-bold text-[#1e3a5f] mb-3">Where to Sign?</h4>
                     <ul className="space-y-2 text-slate-600">
                       <li className="flex items-start gap-2">
-                        <Icons.MapPin />
+                        <span className="text-[#1e3a5f] flex-shrink-0 mt-0.5"><Icons.MapPin /></span>
                         <span>Exquizid Cuts Barbershop, South Garnett Street</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <Icons.Calendar />
+                        <span className="text-[#c9a227] flex-shrink-0 mt-0.5"><Icons.Calendar /></span>
                         <span>Community events throughout District 3</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <Icons.Phone />
+                        <span className="text-[#10b981] flex-shrink-0 mt-0.5"><Icons.Phone /></span>
                         <span>Contact CJ to arrange a signing</span>
                       </li>
                     </ul>
