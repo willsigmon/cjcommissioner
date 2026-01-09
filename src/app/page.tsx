@@ -352,11 +352,11 @@ export default function Home() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow ring-2 ring-[#1e3a5f] dark:ring-[#c9a227]">
                 <Image
-                  src="/cj-turrentine.png"
+                  src="/cj-headshot.png"
                   alt="CJ"
                   width={48}
                   height={48}
-                  className="w-full h-full object-cover object-[center_15%] scale-[1.8]"
+                  className="w-full h-full object-cover object-[center_20%] scale-[1.6]"
                 />
               </div>
               <div className="flex flex-col">
@@ -473,7 +473,7 @@ export default function Home() {
                   {/* Main image with caption */}
                   <div className="relative">
                     <Image
-                      src="/cj-hero-composite.png"
+                      src="/cj-hero.png"
                       alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
                       width={600}
                       height={720}
