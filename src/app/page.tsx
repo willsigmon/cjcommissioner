@@ -705,185 +705,148 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Achievements Section */}
-        <section id="achievements" className="py-20 px-4 sm:px-6 lg:px-8 relative">
-          <div className="max-w-7xl mx-auto">
+        {/* Achievements Section - Clean Timeline Design */}
+        <section id="achievements" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50 relative">
+          <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16 animate-fadeInUp">
-              <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/10 text-[#9a7b1d] dark:text-[#c9a227] rounded-full text-sm font-bold uppercase tracking-wider mb-4 border border-[#c9a227]/20">
+              <span className="inline-block px-4 py-2 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm font-bold uppercase tracking-wider text-[#1e3a5f] dark:text-[#c9a227] mb-4">
                 Proven Results
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] dark:text-white mb-4">
                 Track Record of Impact
               </h2>
-              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                CJ doesn&apos;t just talk—he delivers. Here&apos;s what he&apos;s already accomplished for Henderson.
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                CJ doesn&apos;t just talk—he delivers.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8">
+            {/* Achievement Cards - Vertical Stack */}
+            <div className="space-y-6">
               {/* Chestnut Street Park */}
-              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInLeft">
-                <div className="h-48 bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="text-center text-white relative z-10">
-                    <div className="text-5xl font-black">$140K</div>
-                    <div className="text-lg mt-2">Raised for Community</div>
+              <div className="glass-card rounded-2xl p-6 md:p-8 card-hover animate-fadeInUp">
+                <div className="flex flex-col md:flex-row md:items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-2xl flex items-center justify-center text-white">
+                    <span className="text-2xl md:text-3xl font-black">$140K</span>
                   </div>
-                </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-[#1e3a5f] dark:text-white mb-4">
-                    Chestnut Street Park Beautification
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-6">
-                    An 8-year effort that transformed a neglected basketball court into a vibrant community space.
-                    The park sits on historically significant ground—the old J.P. Taylor tobacco barn site and near
-                    Davis Chapel, a Green Book safe haven.
-                  </p>
-                  <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Six new breakaway basketball goals</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Two colorful courts representing Henderson & Vance County</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Top-5 finalist in national Bobcat contest</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#10b981] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Phase 2: Solar canopy, ADA bathrooms coming</span>
-                    </li>
-                  </ul>
+                  <div className="flex-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-[#1e3a5f] dark:text-white mb-2">
+                      Chestnut Street Park Beautification
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400 mb-4">
+                      An 8-year effort transforming a neglected basketball court into a vibrant community space on historically significant ground.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">6 basketball goals</span>
+                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">2 colorful courts</span>
+                      <span className="px-3 py-1 bg-[#c9a227]/20 rounded-full text-sm text-[#9a7b1d] dark:text-[#c9a227]">Top-5 national finalist</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Pathways 2 Peace */}
-              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
-                <div className="h-48 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="text-center text-white relative z-10">
+              <div className="glass-card rounded-2xl p-6 md:p-8 card-hover animate-fadeInUp stagger-1">
+                <div className="flex flex-col md:flex-row md:items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-2xl flex items-center justify-center text-white">
                     <Icons.Shield />
-                    <div className="text-3xl font-black mt-4">Pathways 2 Peace</div>
-                    <div className="text-lg mt-2">501(c)(3) Coalition</div>
                   </div>
-                </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-[#1e3a5f] dark:text-white mb-4">
-                    Fighting Gun Violence Head-On
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-6">
-                    Founded in response to alarming statistics—Vance County has NC&apos;s highest rate of firearm ER visits.
-                    CJ built a coalition bringing together community, faith leaders, and local government.
-                  </p>
-                  <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>170+ community members at initial listening session</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Launched connect-to-henderson.com resource hub</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Partnership with NC Office of Violence Prevention</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Creating practical solutions, not just talk</span>
-                    </li>
-                  </ul>
+                  <div className="flex-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-[#1e3a5f] dark:text-white mb-2">
+                      Pathways 2 Peace
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400 mb-4">
+                      Founded a 501(c)(3) coalition to fight gun violence after Vance County recorded NC&apos;s highest rate of firearm ER visits.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">170+ members</span>
+                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">NC partnership</span>
+                      <span className="px-3 py-1 bg-[#c9a227]/20 rounded-full text-sm text-[#9a7b1d] dark:text-[#c9a227]">501(c)(3)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Hope House */}
-              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
-                <div className="h-48 bg-gradient-to-br from-[#c9a227] to-[#a07d1a] flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="text-center text-white relative z-10">
+              <div className="glass-card rounded-2xl p-6 md:p-8 card-hover animate-fadeInUp stagger-2">
+                <div className="flex flex-col md:flex-row md:items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-2xl flex items-center justify-center text-white">
                     <Icons.Home />
-                    <div className="text-3xl font-black mt-4">The Hope House</div>
-                    <div className="text-lg mt-2">Transitional Housing</div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-[#1e3a5f] dark:text-white mb-2">
+                      The Hope House
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400 mb-4">
+                      After 5 years leading the Men&apos;s Homeless Shelter, helped develop transitional housing where men learn financial management.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">Transitional housing</span>
+                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">Financial literacy</span>
+                      <span className="px-3 py-1 bg-[#c9a227]/20 rounded-full text-sm text-[#9a7b1d] dark:text-[#c9a227]">5 years service</span>
+                    </div>
                   </div>
                 </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-[#1e3a5f] dark:text-white mb-4">
-                    Helping Men Rebuild Their Lives
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-6">
-                    After 5 years leading the Men&apos;s Homeless Shelter, CJ helped develop The Hope House on
-                    Horner Street—a transitional home where men learn financial management and gain self-sufficiency.
-                  </p>
-                  <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Bridge from shelter to independence</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Financial literacy training</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#c9a227] flex-shrink-0"><Icons.CheckCircle /></span>
-                      <span>Life skills development</span>
-                    </li>
-                  </ul>
-                </div>
               </div>
+            </div>
+          </div>
+        </section>
 
-              {/* District 3 Context */}
-              <div className="bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp p-8 text-white relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#c9a227]/20 rounded-full blur-2xl" />
-                <h3 className="text-2xl font-bold mb-4 relative z-10">
-                  About District 3 (Sandy Creek)
-                </h3>
-                <p className="text-white/80 mb-6 relative z-10">
-                  District 3 covers rural eastern Vance County with 5,732 residents. It&apos;s one of the county&apos;s
-                  most diverse districts: 43.8% white, 41.3% Black, and 13.6% Hispanic.
+        {/* District 3 Section - Separate from Achievements */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#c9a227]/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+
+          <div className="max-w-5xl mx-auto relative z-10">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="animate-fadeInLeft">
+                <span className="inline-block px-3 py-1 bg-white/10 rounded-full text-sm font-medium text-[#c9a227] mb-4">
+                  Your District
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  District 3 (Sandy Creek)
+                </h2>
+                <p className="text-white/80 mb-6 text-lg">
+                  5,732 residents in rural eastern Vance County. One of the county&apos;s most diverse districts.
                 </p>
-                <div className="glass bg-white/10 rounded-2xl p-6 relative z-10">
-                  <p className="text-lg font-medium mb-4">
+                <div className="glass bg-white/10 rounded-xl p-4 mb-6">
+                  <p className="font-medium">
                     The 2022 primary was decided by just <span className="text-[#c9a227] font-bold">10 votes</span>.
-                    Your signature—and your vote—truly matters.
                   </p>
-                  <p className="text-white/70 text-sm">
-                    The current commissioner was appointed in January 2025, not elected. This is your chance
-                    to choose your own representative.
+                  <p className="text-white/60 text-sm mt-1">
+                    The current commissioner was appointed in January 2025, not elected.
                   </p>
+                </div>
+                <div className="flex flex-wrap gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-white/60"></div>
+                    <span>43.8% White</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-[#c9a227]"></div>
+                    <span>41.3% Black</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-white/30"></div>
+                    <span>13.6% Hispanic</span>
+                  </div>
                 </div>
               </div>
 
-              {/* District 3 Map */}
-              <div className="glass-card rounded-3xl overflow-hidden shadow-xl card-hover animate-fadeInUp">
-                <div className="p-6 border-b border-slate-200/50 dark:border-slate-700/50">
-                  <h3 className="text-xl font-bold text-[#1e3a5f] dark:text-white flex items-center gap-2">
-                    <Icons.MapPin />
-                    District 3 Map
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
-                    Sandy Creek Township, Eastern Vance County
-                  </p>
-                </div>
-                <div className="aspect-video relative">
+              <div className="animate-fadeInRight">
+                <div className="rounded-2xl overflow-hidden shadow-2xl">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103062.67850895!2d-78.45!3d36.32!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89ac7e0e8b3b8e8d%3A0x8f0a8f8b8b8b8b8b!2sVance%20County%2C%20NC!5e0!3m2!1sen!2sus!4v1234567890"
                     width="100%"
-                    height="100%"
+                    height="300"
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    className="absolute inset-0"
                   />
                 </div>
-                <div className="p-4 bg-slate-50 dark:bg-slate-800/50">
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    <strong>Key Areas:</strong> Sandy Creek, Dabney, Townsville, parts of Henderson
-                  </p>
-                </div>
+                <p className="text-white/50 text-sm mt-3 text-center">
+                  Sandy Creek, Dabney, Townsville, parts of Henderson
+                </p>
               </div>
             </div>
           </div>
