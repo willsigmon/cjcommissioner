@@ -480,13 +480,13 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* CJ Image - head breaks out above panel */}
-                    <div className="absolute -bottom-4 sm:-bottom-6 md:-bottom-8 left-1/2 -translate-x-1/2 w-72 sm:w-80 md:w-96">
+                    {/* CJ Image - head breaks out well above panel */}
+                    <div className="absolute -bottom-12 sm:-bottom-16 md:-bottom-20 left-1/2 -translate-x-1/2 w-80 sm:w-96 md:w-[28rem]">
                       <Image
                         src="/cj-turrentine.png"
                         alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
-                        width={384}
-                        height={480}
+                        width={448}
+                        height={560}
                         className="object-contain drop-shadow-2xl"
                         priority
                       />
