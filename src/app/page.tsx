@@ -356,7 +356,7 @@ export default function Home() {
                   alt="CJ"
                   width={48}
                   height={48}
-                  className="w-full h-full object-cover object-top scale-150 translate-y-1"
+                  className="w-full h-full object-cover object-[center_15%] scale-[1.8]"
                 />
               </div>
               <div className="flex flex-col">
@@ -475,9 +475,9 @@ export default function Home() {
                     <Image
                       src="/cj-hero-composite.png"
                       alt="CJ Turrentine - Candidate for Vance County Commissioner District 3"
-                      width={500}
-                      height={600}
-                      className="relative z-10 w-72 sm:w-80 md:w-96 h-auto drop-shadow-2xl"
+                      width={600}
+                      height={720}
+                      className="relative z-10 w-80 sm:w-96 md:w-[28rem] lg:w-[32rem] h-auto drop-shadow-2xl"
                       priority
                     />
                     {/* Caption overlay */}
