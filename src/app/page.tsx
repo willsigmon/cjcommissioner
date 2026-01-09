@@ -983,19 +983,19 @@ export default function Home() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold text-[#1e3a5f] dark:text-white mb-3">Where to Sign?</h4>
+                    <h4 className="font-bold text-[#1e3a5f] dark:text-white mb-3">How to Sign?</h4>
                     <ul className="space-y-2 text-slate-600 dark:text-slate-400">
                       <li className="flex items-start gap-2">
-                        <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0 mt-0.5"><Icons.MapPin /></span>
-                        <span>Exquizid Cuts Barbershop, South Garnett Street</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#c9a227] flex-shrink-0 mt-0.5"><Icons.Calendar /></span>
-                        <span>Community events throughout District 3</span>
-                      </li>
-                      <li className="flex items-start gap-2">
                         <span className="text-[#10b981] flex-shrink-0 mt-0.5"><Icons.Phone /></span>
-                        <span>Contact CJ to arrange a signing</span>
+                        <span>Call/text <a href="tel:+12522049334" className="font-bold text-[#1e3a5f] dark:text-[#c9a227] hover:underline">(252) 204-9334</a> — CJ will come to you!</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#c9a227] flex-shrink-0 mt-0.5"><Icons.Mail /></span>
+                        <span>Sign up online below and we&apos;ll arrange a meeting</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#1e3a5f] dark:text-[#c9a227] flex-shrink-0 mt-0.5"><Icons.Calendar /></span>
+                        <span>Community events throughout District 3</span>
                       </li>
                     </ul>
                   </div>
