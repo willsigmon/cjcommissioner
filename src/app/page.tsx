@@ -606,7 +606,6 @@ export default function Home() {
                       "Director, Community Partners of Hope Men's Shelter (5 years)",
                       "Henderson-Vance Crime Stoppers Board Member",
                       "Leadership Vance Class of 2025 Graduate",
-                      "PR & Community Ambassador, Exquizid Cuts Barbershop",
                       "Sam Watkins Visionary Award Recipient (2025)",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
