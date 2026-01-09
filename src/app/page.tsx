@@ -699,9 +699,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Achievements Section - Clean Timeline Design */}
-        <section id="achievements" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50 relative">
-          <div className="max-w-5xl mx-auto">
+        {/* Achievements Section - Visual Partner Showcase */}
+        <section id="achievements" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1e3a5f]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[#c9a227]/5 rounded-full blur-3xl" />
+
+          <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-16 animate-fadeInUp">
               <span className="inline-block px-4 py-2 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm font-bold uppercase tracking-wider text-[#1e3a5f] dark:text-[#c9a227] mb-4">
                 Proven Results
@@ -710,75 +714,113 @@ export default function Home() {
                 Track Record of Impact
               </h2>
               <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                CJ doesn&apos;t just talk—he delivers.
+                CJ doesn&apos;t just talk—he delivers. Here are the organizations and projects he&apos;s championed.
               </p>
             </div>
 
-            {/* Achievement Cards - Vertical Stack */}
-            <div className="space-y-6">
-              {/* Chestnut Street Park */}
-              <div className="glass-card rounded-2xl p-6 md:p-8 card-hover animate-fadeInUp">
-                <div className="flex flex-col md:flex-row md:items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-2xl flex items-center justify-center text-white">
-                    <span className="text-2xl md:text-3xl font-black">$140K</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl md:text-2xl font-bold text-[#1e3a5f] dark:text-white mb-2">
-                      Chestnut Street Park Beautification
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4">
-                      An 8-year effort transforming a neglected basketball court into a vibrant community space on historically significant ground.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">6 basketball goals</span>
-                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">2 colorful courts</span>
-                      <span className="px-3 py-1 bg-[#c9a227]/20 rounded-full text-sm text-[#9a7b1d] dark:text-[#c9a227]">Top-5 national finalist</span>
+            {/* Featured Achievement - Chestnut Street Park */}
+            <div className="mb-12 animate-fadeInUp">
+              <div className="glass-card rounded-3xl overflow-hidden shadow-xl">
+                <div className="grid md:grid-cols-2">
+                  {/* Visual Side */}
+                  <div className="bg-gradient-to-br from-[#1e3a5f] via-[#1e3a5f] to-[#0f2544] p-8 md:p-12 flex flex-col justify-center relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a227]/20 rounded-full blur-3xl" />
+                    <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
+                    <div className="relative z-10">
+                      <div className="inline-block px-4 py-2 bg-[#c9a227] rounded-full text-sm font-bold text-[#1e3a5f] mb-6">
+                        $140,000 Secured
+                      </div>
+                      <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                        Chestnut Street Park
+                      </h3>
+                      <p className="text-white/80 text-lg">
+                        8-year transformation of a neglected court into Henderson&apos;s premier community space.
+                      </p>
                     </div>
                   </div>
+                  {/* Content Side */}
+                  <div className="p-8 md:p-12 flex flex-col justify-center">
+                    <div className="space-y-4 mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#10b981]/10 flex items-center justify-center text-[#10b981]">
+                          <Icons.CheckCircle />
+                        </div>
+                        <span className="text-slate-700 dark:text-slate-300">6 new breakaway basketball goals</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#10b981]/10 flex items-center justify-center text-[#10b981]">
+                          <Icons.CheckCircle />
+                        </div>
+                        <span className="text-slate-700 dark:text-slate-300">2 vibrant courts for Henderson & Vance</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#c9a227]/10 flex items-center justify-center text-[#c9a227]">
+                          <Icons.Award />
+                        </div>
+                        <span className="text-slate-700 dark:text-slate-300 font-medium">Top-5 national Bobcat contest finalist</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700 pt-4">
+                      Historic site: Former J.P. Taylor tobacco barn, near Davis Chapel—a Green Book safe haven.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Partner Organizations */}
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Community Partners of Hope */}
+              <div className="glass-card rounded-2xl p-8 card-hover animate-fadeInUp stagger-1">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-20 h-20 rounded-2xl bg-white shadow-md flex items-center justify-center p-2 overflow-hidden">
+                    <Image
+                      src="/cp-hope-logo.png"
+                      alt="Community Partners of Hope"
+                      width={72}
+                      height={72}
+                      className="object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#1e3a5f] dark:text-white">
+                      Community Partners of Hope
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">The Hope House</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 dark:text-slate-400 mb-6">
+                  After 5 years leading the Men&apos;s Homeless Shelter, CJ helped develop The Hope House—transitional housing where men rebuild their lives through financial literacy and life skills.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">5 years service</span>
+                  <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">Board Director</span>
                 </div>
               </div>
 
               {/* Pathways 2 Peace */}
-              <div className="glass-card rounded-2xl p-6 md:p-8 card-hover animate-fadeInUp stagger-1">
-                <div className="flex flex-col md:flex-row md:items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-2xl flex items-center justify-center text-white">
-                    <Icons.Shield />
+              <div className="glass-card rounded-2xl p-8 card-hover animate-fadeInUp stagger-2">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#1e3a5f] to-[#16293d] shadow-md flex items-center justify-center">
+                    <div className="text-center text-white">
+                      <div className="text-xs font-medium opacity-80">PATHWAYS</div>
+                      <div className="text-2xl font-black leading-none">2</div>
+                      <div className="text-xs font-medium opacity-80">PEACE</div>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl md:text-2xl font-bold text-[#1e3a5f] dark:text-white mb-2">
+                  <div>
+                    <h3 className="text-xl font-bold text-[#1e3a5f] dark:text-white">
                       Pathways 2 Peace
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4">
-                      Founded a 501(c)(3) coalition to fight gun violence after Vance County recorded NC&apos;s highest rate of firearm ER visits.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">170+ members</span>
-                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">NC partnership</span>
-                      <span className="px-3 py-1 bg-[#c9a227]/20 rounded-full text-sm text-[#9a7b1d] dark:text-[#c9a227]">501(c)(3)</span>
-                    </div>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">501(c)(3) Coalition</p>
                   </div>
                 </div>
-              </div>
-
-              {/* Hope House */}
-              <div className="glass-card rounded-2xl p-6 md:p-8 card-hover animate-fadeInUp stagger-2">
-                <div className="flex flex-col md:flex-row md:items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#1e3a5f] to-[#16293d] rounded-2xl flex items-center justify-center text-white">
-                    <Icons.Home />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl md:text-2xl font-bold text-[#1e3a5f] dark:text-white mb-2">
-                      The Hope House
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4">
-                      After 5 years leading the Men&apos;s Homeless Shelter, helped develop transitional housing where men learn financial management.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">Transitional housing</span>
-                      <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">Financial literacy</span>
-                      <span className="px-3 py-1 bg-[#c9a227]/20 rounded-full text-sm text-[#9a7b1d] dark:text-[#c9a227]">5 years service</span>
-                    </div>
-                  </div>
+                <p className="text-slate-600 dark:text-slate-400 mb-6">
+                  CJ founded this coalition to fight gun violence after Vance County recorded NC&apos;s highest rate of firearm ER visits. Building bridges between community, faith leaders, and government.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">170+ members</span>
+                  <span className="px-3 py-1 bg-[#1e3a5f]/10 dark:bg-[#1e3a5f]/30 rounded-full text-sm text-[#1e3a5f] dark:text-slate-300">Founder</span>
                 </div>
               </div>
             </div>
