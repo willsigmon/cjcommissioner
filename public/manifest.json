@@ -1,0 +1,21 @@
+{
+  "name": "CJ Turrentine for Commissioner",
+  "short_name": "CJ4Commissioner",
+  "description": "CJ Turrentine for Vance County Commissioner District 3 - A public servant, not a politician",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e3a5f",
+  "theme_color": "#1e3a5f",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

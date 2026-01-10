@@ -177,11 +177,12 @@ function ContactForm() {
     setFormState('submitting');
 
     try {
-      // Using Formspree for form handling - free tier
-      const response = await fetch('https://formspree.io/f/cturrentinejr@gmail.com', {
+      // Using FormSubmit.co for form handling - free, no signup required
+      const response = await fetch('https://formsubmit.co/ajax/cturrentinejr@gmail.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           name: formData.name,
@@ -189,6 +190,7 @@ function ContactForm() {
           interest: formData.interest,
           message: formData.message,
           _subject: `Campaign Contact: ${formData.interest}`,
+          _captcha: 'false',
         }),
       });
 
@@ -196,7 +198,7 @@ function ContactForm() {
         setFormState('success');
         setFormData({ name: '', email: '', interest: 'Signing the petition', message: '' });
       } else {
-        // Fallback to mailto if Formspree fails
+        // Fallback to mailto if FormSubmit fails
         const mailtoLink = `mailto:cturrentinejr@gmail.com?subject=${encodeURIComponent(`Campaign Contact: ${formData.interest}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nInterest: ${formData.interest}\n\nMessage:\n${formData.message}`)}`;
         window.location.href = mailtoLink;
         setFormState('success');
