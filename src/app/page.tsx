@@ -604,7 +604,7 @@ export default function Home() {
                       "Chair, Henderson Community-Wide Advisory Committee",
                       "Vance Charter School Board of Directors",
                       "Director, Community Partners of Hope Men's Shelter (5 years)",
-                      "Henderson-Vance Crime Stoppers Board Member",
+                      "Salvation Army Advisory Board Member",
                       "Leadership Vance Class of 2025 Graduate",
                       "Sam Watkins Visionary Award Recipient (2025)",
                     ].map((item, i) => (
@@ -678,8 +678,8 @@ export default function Home() {
                 },
                 {
                   icon: <Icons.Heart />,
-                  title: "Fiscal Responsibility",
-                  desc: "Smart investments over big spending—like recommending phased jail renovation instead of a $45M new facility.",
+                  title: "Accessible Government",
+                  desc: "Making county government practical and approachable—so every citizen feels heard and has a real voice in their community's future.",
                   gradient: "from-orange-500 to-orange-600",
                 },
               ].map((item, i) => (
@@ -869,19 +869,17 @@ export default function Home() {
               </div>
 
               <div className="animate-fadeInRight">
-                <div className="rounded-2xl overflow-hidden shadow-2xl">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103062.67850895!2d-78.45!3d36.32!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89ac7e0e8b3b8e8d%3A0x8f0a8f8b8b8b8b8b!2sVance%20County%2C%20NC!5e0!3m2!1sen!2sus!4v1234567890"
-                    width="100%"
-                    height="300"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
+                <div className="rounded-2xl overflow-hidden shadow-2xl bg-white">
+                  <Image
+                    src="/district-map.png"
+                    alt="Vance County Electoral Districts Map - District 3 highlighted in light blue"
+                    width={600}
+                    height={500}
+                    className="w-full h-auto"
                   />
                 </div>
                 <p className="text-white/50 text-sm mt-3 text-center">
-                  Sandy Creek, Dabney, Townsville, parts of Henderson
+                  District 3 (light blue) • Sandy Creek, Dabney, Townsville
                 </p>
               </div>
             </div>
