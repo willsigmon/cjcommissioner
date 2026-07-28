@@ -17,6 +17,8 @@ blue-and-brick editorial rules, and real documentary photography.
 
 - Display: **Archivo Black**, short statements only
 - Body and UI: **IBM Plex Sans**
+- Editorial: **Newsreader**, reserved for first-person narrative, human emphasis,
+  and the second half of the homepage campaign statement
 - Display headlines use tight leading and balanced wrapping.
 - Body copy stays between 17px and 20px with generous line height.
 - Uppercase labels use tracking rather than tiny type.
@@ -61,9 +63,14 @@ icon tiles, or automatic dark mode.
 
 ## Motion
 
-- Only hover, focus, menu, and form-state transitions
-- Duration: 150–220ms
-- No scroll-reveal or ornamental fade animation
+- The homepage opens with one signature editorial sequence: the ballot mark
+  draws, the two headline voices unmask, and the real portrait reveals upward.
+- Hover motion is limited to directional arrows, proof numerals, editorial
+  label rules, and a restrained 2.5% documentary-photo scale.
+- The My Story quotation uses a single scroll-linked gold rule draw when the
+  browser supports view timelines; the quotation itself never fades or moves.
+- State transitions remain 150–220ms; photography can ease over 650ms.
+- No repeated fade-up, parallax, looping, bouncing, or ornamental animation.
 - Under `prefers-reduced-motion: reduce`, transitions and smooth scrolling stop
 
 ## Photography

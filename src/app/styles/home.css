@@ -27,6 +27,19 @@
   text-transform: uppercase;
 }
 
+.hero-line {
+  display: block;
+}
+
+.hero-line-editorial {
+  color: var(--blue);
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  margin-top: 0.04em;
+}
+
 .ballot-status span {
   background: var(--brick);
   height: 10px;
@@ -155,6 +168,13 @@
   flex-direction: column-reverse;
   min-height: 144px;
   padding: 8px 24px 0;
+  transition:
+    background-color 220ms ease,
+    padding 220ms var(--ease-out);
+}
+
+.proof-grid > div:hover {
+  background: rgb(255 255 255 / 5%);
 }
 
 .proof-grid > div:first-child {
@@ -175,6 +195,14 @@
   letter-spacing: -0.04em;
   line-height: 1;
   margin: 0 0 14px;
+  transition:
+    color 180ms ease,
+    transform 220ms var(--ease-out);
+}
+
+.proof-grid > div:hover dd {
+  color: var(--paper);
+  transform: translateY(-4px);
 }
 
 .section-header {
@@ -214,6 +242,7 @@
   color: var(--brick);
   font-family: var(--display);
   font-size: 1.1rem;
+  transition: transform 220ms var(--ease-out);
 }
 
 .case-kicker {
@@ -231,6 +260,15 @@
   font-weight: 400;
   letter-spacing: -0.03em;
   margin-bottom: 24px;
+  transition: color 180ms ease;
+}
+
+.result-case:hover .result-index {
+  transform: translateX(5px);
+}
+
+.result-case:hover .result-intro h3 {
+  color: var(--blue);
 }
 
 .result-intro > p:not(.case-kicker) {
@@ -357,6 +395,11 @@
 
 .photo-frame img {
   object-fit: cover;
+  transition: transform 650ms var(--ease-out);
+}
+
+.photo-note:hover .photo-frame img {
+  transform: scale(1.025);
 }
 
 .photo-note figcaption {
@@ -449,8 +492,10 @@
 
 .district-copy .district-lead {
   color: var(--ink);
+  font-family: var(--editorial);
   font-size: clamp(1.2rem, 2vw, 1.45rem);
   font-weight: 500;
+  line-height: 1.5;
 }
 
 .district-map {
@@ -743,4 +788,62 @@
   margin: 0 0 6px;
   padding: 10px;
   text-align: center;
+}
+
+@keyframes ballot-rule-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes headline-clip-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.32em);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes portrait-clip-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes portrait-rule-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ballot-status span {
+    animation: ballot-rule-in 520ms var(--ease-out) 80ms both;
+    transform-origin: left center;
+  }
+
+  .hero-line {
+    animation: headline-clip-in 680ms var(--ease-out) 120ms both;
+  }
+
+  .hero-line-editorial {
+    animation-delay: 240ms;
+  }
+
+  .portrait-field {
+    animation: portrait-clip-in 860ms var(--ease-out) 140ms both;
+  }
+
+  .portrait-field::after {
+    animation: portrait-rule-in 720ms var(--ease-out) 760ms both;
+    transform-origin: left center;
+  }
 }

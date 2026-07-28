@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo_Black, IBM_Plex_Sans } from "next/font/google";
+import {
+  Archivo_Black,
+  IBM_Plex_Sans,
+  Newsreader,
+} from "next/font/google";
 import "./globals.css";
 
 const archivoBlack = Archivo_Black({
@@ -13,6 +17,14 @@ const plexSans = IBM_Plex_Sans({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
+});
+
+const newsreader = Newsreader({
+  display: "swap",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-editorial",
   weight: ["400", "500", "600", "700"],
 });
 
@@ -63,10 +75,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${archivoBlack.variable} ${plexSans.variable}`}>
-        {children}
-      </body>
+    <html
+      className={`${archivoBlack.variable} ${plexSans.variable} ${newsreader.variable}`}
+      lang="en"
+    >
+      <body>{children}</body>
     </html>
   );
 }

@@ -30,6 +30,10 @@
 }
 
 .story-hero h1 {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.055em;
   margin-bottom: 32px;
 }
 
@@ -97,22 +101,57 @@
 
 .story-prose .story-lede {
   color: var(--ink);
-  font-size: 1.32rem;
+  font-family: var(--editorial);
+  font-size: 1.48rem;
   font-weight: 500;
+  line-height: 1.5;
 }
 
 .story-quote {
   border-left: 10px solid var(--gold);
   margin-block: 72px;
   padding: 16px 0 16px 32px;
+  position: relative;
 }
 
 .story-quote blockquote {
-  font-family: var(--display);
+  font-family: var(--editorial);
   font-size: clamp(2rem, 5vw, 3.6rem);
+  font-style: italic;
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.05;
   margin: 0;
+}
+
+@keyframes quote-rule-draw {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .story-quote {
+      border-left: 0;
+    }
+
+    .story-quote::before {
+      animation: quote-rule-draw linear both;
+      animation-range: entry 10% cover 35%;
+      animation-timeline: view();
+      background: var(--gold);
+      content: "";
+      inset: 0 auto 0 0;
+      position: absolute;
+      transform-origin: top center;
+      width: 10px;
+    }
+  }
 }
 
 .story-photo-section {

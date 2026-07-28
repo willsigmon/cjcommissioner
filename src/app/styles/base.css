@@ -9,6 +9,8 @@
   --white: #ffffff;
   --display: var(--font-display), Impact, sans-serif;
   --body: var(--font-body), Arial, sans-serif;
+  --editorial: var(--font-editorial), Georgia, serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --shell: min(1180px, calc(100vw - 48px));
   --reading: 720px;
 }
@@ -90,7 +92,14 @@ img {
   display: inline-block;
   height: 3px;
   margin: 0 10px 3px 0;
+  transform-origin: left center;
+  transition: transform 220ms var(--ease-out);
   width: 24px;
+}
+
+.section-header:hover .section-label::before,
+.section-label:hover::before {
+  transform: scaleX(1.65);
 }
 
 .section-label-light {
@@ -169,7 +178,13 @@ p {
 .button svg,
 .text-link svg {
   height: 18px;
+  transition: transform 180ms var(--ease-out);
   width: 18px;
+}
+
+.button:hover svg,
+.text-link:hover svg {
+  transform: translate(3px, -3px);
 }
 
 .button:hover {
@@ -294,10 +309,14 @@ p {
   font-weight: 600;
   min-height: 44px;
   text-decoration: none;
+  transition:
+    color 180ms ease,
+    transform 180ms var(--ease-out);
 }
 
 .desktop-nav > a:not(.button):hover {
   color: var(--blue);
+  transform: translateY(-1px);
 }
 
 .header-volunteer {

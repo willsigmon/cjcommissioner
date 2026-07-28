@@ -25,7 +25,12 @@ export default function HomePage() {
                 <span aria-hidden="true" />
                 {campaign.status}
               </p>
-              <h1>A public servant. A proven record.</h1>
+              <h1>
+                <span className="hero-line">A public servant.</span>
+                <span className="hero-line hero-line-editorial">
+                  A proven record.
+                </span>
+              </h1>
               <p className="hero-deck">
                 CJ Turrentine is a U.S. Army combat veteran and community
                 builder running to serve Vance County Commission District 3.
