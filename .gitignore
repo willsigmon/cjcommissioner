@@ -20,6 +20,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+!.env.example
 
 # IDE
 .vscode/
@@ -34,3 +35,5 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+.env*
+!.env.example

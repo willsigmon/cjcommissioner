@@ -1,0 +1,502 @@
+.page-hero {
+  border-bottom: 1px solid var(--ink);
+  padding-block: clamp(80px, 10vw, 140px);
+}
+
+.page-hero h1 {
+  font-size: clamp(3.2rem, 7vw, 6.2rem);
+  margin-bottom: 32px;
+}
+
+.page-deck,
+.story-deck {
+  color: var(--muted);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  max-width: 720px;
+}
+
+.story-hero {
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+}
+
+.story-hero-grid {
+  align-items: center;
+  display: grid;
+  gap: 64px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
+  min-height: 680px;
+}
+
+.story-hero h1 {
+  margin-bottom: 32px;
+}
+
+.story-deck {
+  color: rgb(255 253 247 / 72%);
+}
+
+.story-portrait {
+  align-self: end;
+  background: var(--gold);
+  border-radius: 12px 12px 0 0;
+  height: 600px;
+  overflow: hidden;
+  position: relative;
+}
+
+.story-portrait img {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: 50% 35%;
+  position: absolute;
+  width: 100%;
+}
+
+.story-body,
+.policy-body {
+  margin-inline: auto;
+  max-width: var(--reading);
+  padding-block: clamp(80px, 10vw, 144px);
+  width: calc(100vw - 48px);
+}
+
+.story-rule {
+  align-items: center;
+  border-bottom: 3px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  margin: 88px 0 32px;
+  padding-bottom: 12px;
+}
+
+.story-rule:first-child {
+  margin-top: 0;
+}
+
+.story-rule span {
+  color: var(--brick);
+  font-family: var(--display);
+}
+
+.story-rule p {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.story-prose p,
+.policy-body p {
+  color: #334255;
+  font-size: 1.08rem;
+}
+
+.story-prose .story-lede {
+  color: var(--ink);
+  font-size: 1.32rem;
+  font-weight: 500;
+}
+
+.story-quote {
+  border-left: 10px solid var(--gold);
+  margin-block: 72px;
+  padding: 16px 0 16px 32px;
+}
+
+.story-quote blockquote {
+  font-family: var(--display);
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.story-photo-section {
+  border-top: 1px solid var(--ink);
+}
+
+.leadership-section {
+  background: var(--blue);
+  color: var(--paper);
+  padding-block: clamp(80px, 10vw, 128px);
+}
+
+.leadership-grid {
+  display: grid;
+  gap: 80px;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+}
+
+.leadership-grid h2 {
+  margin-bottom: 24px;
+}
+
+.leadership-grid > div > p:last-child {
+  color: rgb(255 253 247 / 74%);
+}
+
+.leadership-grid ol {
+  border-top: 1px solid rgb(255 255 255 / 45%);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.leadership-grid li {
+  align-items: baseline;
+  border-bottom: 1px solid rgb(255 255 255 / 30%);
+  display: grid;
+  font-size: 1.05rem;
+  gap: 16px;
+  grid-template-columns: 34px 1fr;
+  line-height: 1.4;
+  padding-block: 22px;
+}
+
+.leadership-grid li span {
+  color: var(--gold);
+  font-family: var(--display);
+}
+
+.story-cta {
+  padding-block: 72px;
+}
+
+.donate-hero {
+  background: var(--gold);
+}
+
+.donate-section {
+  padding-block: clamp(72px, 9vw, 120px);
+}
+
+.donate-layout {
+  align-items: start;
+  display: grid;
+  gap: clamp(48px, 8vw, 112px);
+  grid-template-columns: minmax(260px, 0.6fr) minmax(0, 1.4fr);
+}
+
+.donate-aside {
+  position: sticky;
+  top: 116px;
+}
+
+.donate-aside h2 {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.check-list {
+  border-top: 1px solid var(--ink);
+  list-style: none;
+  margin: 32px 0;
+  padding: 0;
+}
+
+.check-list li {
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.9rem;
+  padding-block: 14px;
+}
+
+.check-list li::before {
+  color: var(--blue);
+  content: "✓";
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.legal-note,
+.form-help,
+.secure-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.donate-form-wrap {
+  border-top: 3px solid var(--ink);
+  padding-top: 32px;
+}
+
+.donation-form {
+  display: grid;
+  gap: 48px;
+}
+
+.donation-form .field-error {
+  color: var(--brick);
+}
+
+.amount-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.amount-choice {
+  position: relative;
+}
+
+.amount-choice input {
+  opacity: 0;
+  position: absolute;
+}
+
+.amount-choice span {
+  align-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  justify-content: center;
+  min-height: 58px;
+}
+
+.amount-choice input:checked + span {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+
+.amount-choice input:focus-visible + span {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.other-amount {
+  margin-top: 20px;
+  max-width: 260px;
+}
+
+.money-input {
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid #aeb7c1;
+  border-radius: 4px;
+  display: flex;
+}
+
+.money-input > span {
+  font-weight: 700;
+  padding-left: 14px;
+}
+
+.money-input input {
+  border: 0;
+}
+
+.form-section {
+  border-top: 1px solid var(--ink);
+  padding-top: 24px;
+}
+
+.form-section-heading {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.form-section-heading > span {
+  align-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  font-family: var(--display);
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.form-section-heading h2 {
+  font-family: var(--body);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.donation-form .form-grid {
+  margin-top: 24px;
+}
+
+.attestations {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.choice-attestation {
+  border-color: var(--rule);
+  min-height: 50px;
+}
+
+.setup-notice {
+  border-color: var(--gold);
+  background: #fff8d9;
+  color: #5a4100;
+}
+
+.secure-note {
+  margin: -32px 0 0;
+  text-align: center;
+}
+
+.checkout-panel {
+  display: grid;
+  gap: 28px;
+}
+
+.campaign-materials-section {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.campaign-materials-section .split-header > p {
+  color: rgb(255 253 247 / 72%);
+}
+
+.materials-grid {
+  display: grid;
+  gap: 32px 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.materials-grid figure {
+  margin: 0;
+}
+
+.materials-grid .material-sign {
+  grid-column: 1 / -1;
+}
+
+.material-frame {
+  background: #f2f0ed;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.material-sign .material-frame {
+  aspect-ratio: 4 / 3;
+}
+
+.materials-grid figure:not(.material-sign) .material-frame {
+  aspect-ratio: 5 / 4;
+}
+
+.material-frame img {
+  object-fit: contain;
+}
+
+.materials-grid figcaption {
+  border-top: 1px solid rgb(255 255 255 / 34%);
+  color: rgb(255 253 247 / 72%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-top: 12px;
+  padding-top: 12px;
+  text-transform: uppercase;
+}
+
+.checkout-summary {
+  align-items: baseline;
+  border-bottom: 3px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.checkout-summary span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.checkout-summary strong {
+  font-family: var(--display);
+  font-size: 2.4rem;
+}
+
+.checkout-panel form {
+  display: grid;
+  gap: 24px;
+}
+
+.payment-divider {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 0.75rem;
+  gap: 12px;
+}
+
+.payment-divider::before,
+.payment-divider::after {
+  background: var(--rule);
+  content: "";
+  flex: 1;
+  height: 1px;
+}
+
+.cancel-link {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.payment-loading {
+  padding-block: 32px;
+}
+
+.state-page {
+  align-items: center;
+  display: flex;
+  min-height: 70vh;
+  padding-block: 96px;
+}
+
+.state-page h1 {
+  font-size: clamp(3rem, 7vw, 5.8rem);
+  margin-bottom: 28px;
+}
+
+.state-page p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+}
+
+.policy-body {
+  display: grid;
+  gap: 56px;
+}
+
+.policy-body section {
+  border-top: 2px solid var(--ink);
+  padding-top: 20px;
+}
+
+.policy-body h2 {
+  font-family: var(--body);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.policy-body a {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.policy-updated {
+  border-top: 1px solid var(--rule);
+  font-size: 0.8rem !important;
+  padding-top: 16px;
+}

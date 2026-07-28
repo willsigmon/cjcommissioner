@@ -1,88 +1,70 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo_Black, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivoBlack = Archivo_Black({
+  display: "swap",
   subsets: ["latin"],
+  variable: "--font-display",
+  weight: "400",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const plexSans = IBM_Plex_Sans({
+  display: "swap",
   subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cjcommissioner.com"),
-  title: "CJ Turrentine for Vance County Commissioner | District 3",
+  title: {
+    default: "CJ Turrentine for Vance County Commissioner | District 3",
+    template: "%s | CJ Turrentine",
+  },
   description:
-    "Charles 'CJ' Turrentine Jr. is running for Vance County Commissioner District 3. A combat veteran and community leader, CJ promises respect, honesty, and real effort. Sign the petition by March 3, 2026.",
+    "U.S. Army combat veteran and community builder CJ Turrentine is on the ballot for Vance County Commissioner District 3 on November 3, 2026.",
   keywords: [
     "CJ Turrentine",
     "Vance County Commissioner",
     "District 3",
-    "Sandy Creek",
-    "Henderson NC",
+    "Henderson North Carolina",
     "Vance County",
-    "Independent candidate",
-    "Pathways 2 Peace",
-    "Chestnut Street Park",
   ],
   authors: [{ name: "CJ Turrentine Campaign" }],
   openGraph: {
-    title: "CJ Turrentine for Vance County Commissioner | District 3",
+    title: "A public servant. A proven record.",
     description:
-      "A public servant, not a politician. Combat veteran and community builder running to change the narrative for Vance County.",
+      "Meet CJ Turrentine and see the results behind his campaign for Vance County Commission District 3.",
     url: "https://cjcommissioner.com",
     siteName: "CJ Turrentine for Commissioner",
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "CJ Turrentine for Vance County Commissioner District 3",
-      },
-    ],
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CJ Turrentine for Vance County Commissioner",
+    title: "A public servant. A proven record.",
     description:
-      "A public servant, not a politician. Sign the petition to help CJ get on the ballot.",
-    images: ["/og-image.png"],
+      "CJ Turrentine is on the ballot for Vance County Commission District 3 on November 3, 2026.",
+    images: ["/opengraph-image"],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#1e3a5f" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
-  ],
+  themeColor: "#FFFDF7",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${archivoBlack.variable} ${plexSans.variable}`}>
         {children}
       </body>
     </html>

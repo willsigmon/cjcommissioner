@@ -1,0 +1,328 @@
+@media (max-width: 1080px) {
+  .desktop-nav {
+    gap: 14px;
+  }
+
+  .desktop-nav > a:not(.button) {
+    font-size: 0.75rem;
+  }
+
+  .priority-grid article {
+    grid-template-columns: 40px 1fr;
+  }
+
+  .priority-grid article p {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 880px) {
+  :root {
+    --shell: min(100% - 40px, 720px);
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .menu-button {
+    display: inline-flex;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding: 72px 0 64px;
+  }
+
+  .hero-portrait {
+    min-height: 620px;
+  }
+
+  .portrait-field {
+    min-height: 588px;
+  }
+
+  .proof-heading,
+  .split-header {
+    align-items: start;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .proof-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .proof-grid > div {
+    border-bottom: 1px solid rgb(255 255 255 / 24%);
+    min-height: 130px;
+    padding: 20px;
+  }
+
+  .proof-grid > div:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .result-case {
+    grid-template-columns: 44px 1fr;
+  }
+
+  .stage-list {
+    grid-column: 2;
+  }
+
+  .photo-note,
+  .photo-span-4,
+  .photo-span-5,
+  .photo-span-6,
+  .photo-span-7 {
+    grid-column: span 6;
+  }
+
+  .priority-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .priority-grid article:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .priority-grid article {
+    padding-inline: 0;
+  }
+
+  .district-grid,
+  .volunteer-grid,
+  .story-hero-grid,
+  .leadership-grid,
+  .donate-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .volunteer-copy,
+  .donate-aside {
+    position: static;
+  }
+
+  .district-map {
+    margin-left: 20px;
+  }
+
+  .story-hero-grid {
+    padding-top: 72px;
+  }
+
+  .story-portrait {
+    height: 540px;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-legal {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --shell: calc(100% - 32px);
+  }
+
+  .section {
+    padding-block: 72px;
+  }
+
+  h1 {
+    font-size: clamp(2.75rem, 15vw, 4.4rem);
+  }
+
+  h2 {
+    font-size: clamp(2.2rem, 11vw, 3.4rem);
+  }
+
+  .header-inner {
+    min-height: 68px;
+  }
+
+  .wordmark-office {
+    display: none;
+  }
+
+  .hero-copy {
+    padding-block: 56px;
+  }
+
+  .ballot-status {
+    align-items: start;
+    font-size: 0.68rem;
+  }
+
+  .button-row .button {
+    width: 100%;
+  }
+
+  .hero-portrait {
+    min-height: 470px;
+    padding: 16px 16px 0;
+  }
+
+  .portrait-field {
+    min-height: 454px;
+  }
+
+  .portrait-image {
+    width: 100%;
+  }
+
+  .portrait-proof {
+    display: none;
+  }
+
+  .proof-band {
+    padding-block: 56px;
+  }
+
+  .proof-heading {
+    gap: 8px;
+  }
+
+  .proof-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-grid > div,
+  .proof-grid > div:nth-child(odd) {
+    border-left: 0;
+    padding-inline: 0;
+  }
+
+  .proof-grid > div:last-child {
+    border-bottom: 0;
+  }
+
+  .result-case {
+    gap: 20px;
+    grid-template-columns: 1fr;
+    padding-block: 48px;
+  }
+
+  .result-index {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+  }
+
+  .stage-list {
+    grid-column: 1;
+  }
+
+  .photo-ledger {
+    column-gap: 0;
+    row-gap: 48px;
+  }
+
+  .photo-note,
+  .photo-span-4,
+  .photo-span-5,
+  .photo-span-6,
+  .photo-span-7 {
+    grid-column: 1 / -1;
+  }
+
+  .photo-note figcaption {
+    grid-template-columns: 1fr;
+  }
+
+  .priority-grid article {
+    gap: 14px;
+    grid-template-columns: 36px 1fr;
+  }
+
+  .district-map {
+    margin-left: 12px;
+  }
+
+  .form-grid,
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .donate-rail-inner,
+  .story-cta-inner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-legal {
+    grid-column: auto;
+  }
+
+  .story-hero-grid {
+    gap: 40px;
+    min-height: auto;
+    padding-top: 56px;
+  }
+
+  .story-hero h1 {
+    font-size: clamp(2.8rem, 14vw, 4.2rem);
+  }
+
+  .story-portrait {
+    height: 440px;
+  }
+
+  .story-body,
+  .policy-body {
+    width: calc(100vw - 32px);
+  }
+
+  .story-quote {
+    border-left-width: 6px;
+    padding-left: 20px;
+  }
+
+  .amount-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .amount-choice:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .materials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .materials-grid .material-sign {
+    grid-column: auto;
+  }
+
+  .state-page .button-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
