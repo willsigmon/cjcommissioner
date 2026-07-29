@@ -25,8 +25,9 @@ export default function MyStoryPage() {
               <p className="section-label section-label-gold">My story</p>
               <h1>Service did not end when I came home.</h1>
               <p className="story-deck">
-                My campaign is built on a simple belief: if you have the ability
-                to serve, you have a responsibility to show up.
+                I am Charles “CJ” Turrentine Jr., a disabled U.S. Army combat
+                veteran, a proud son of Henderson, and a candidate for Vance
+                County Commissioner, District 3.
               </p>
             </div>
             <div className="story-portrait">
@@ -50,16 +51,14 @@ export default function MyStoryPage() {
           <div className="story-prose">
             <p className="story-lede">
               I served our country in the U.S. Army and the North Carolina
-              National Guard, including service in Iraq. I learned that service
-              means accepting responsibility for the people beside you and
-              continuing the mission even when the work is hard.
+              National Guard, including combat service in Iraq. After surviving
+              combat and a life-changing accident, I chose to dedicate my life
+              to serving others.
             </p>
             <p>
-              I also came home carrying combat-related brain injuries. Overcoming
-              those injuries became part of my journey. I will not add details
-              that do not belong to the public, but I can say what the experience
-              clarified for me: time matters, people matter, and a life of
-              service cannot stop with one chapter.
+              Recovery became part of my journey. It clarified what matters:
+              time matters, people matter, and a life of service cannot stop
+              with one chapter.
             </p>
           </div>
 
@@ -75,10 +74,10 @@ export default function MyStoryPage() {
           </div>
           <div className="story-prose">
             <p>
-              Recovery strengthened my commitment to Vance County. I wanted my
-              neighbors to feel the same discipline, persistence, and care that
-              military service demanded of me. That meant doing the work before
-              asking for an office.
+              I am Henderson&apos;s biggest cheerleader, and I proudly represent
+              Vance County wherever I go because I believe deeply in our people
+              and our potential. That belief has kept me showing up and doing
+              the work before asking for an office.
             </p>
             <p>
               I kept showing up—with young people, neighborhood leaders,
@@ -94,16 +93,18 @@ export default function MyStoryPage() {
           </div>
           <div className="story-prose">
             <p>
-              I am running for Vance County Commissioner because our community
-              has a strong workforce, talented young people, deep roots, and more
-              potential than the opportunities in front of us today.
+              I am running for Vance County Commissioner, District 3, to expand
+              opportunity, support families, and help build a safer, stronger
+              Vance County. Our community has a strong workforce, talented young
+              people, deep roots, and more potential than the opportunities in
+              front of us today.
             </p>
             <p>
-              I want county leadership that negotiates from strength, protects
-              our resources, and measures growth by the value it brings back to
-              the people who live here. I want to take the same approach that
-              moved local work forward: listen, bring people together, name the
-              goal, and stay until the work is done.
+              I will advocate for responsible growth that respects our
+              community, protects our resources, and creates real value for
+              local families. I will take the same approach that has moved local
+              work forward: listen, bring people together, name the goal, and
+              stay until the work is done.
             </p>
           </div>
         </article>

@@ -32,9 +32,11 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="hero-deck">
-                CJ Turrentine is a U.S. Army combat veteran and community
-                builder running to serve Vance County Commission District 3.
-                This campaign is built on service—not politics.
+                Charles “CJ” Turrentine Jr. is a disabled U.S. Army combat
+                veteran, community builder, and proud son of Henderson running
+                for Vance County Commissioner, District 3. He is focused on
+                expanding opportunity, supporting families, and building a
+                safer, stronger Vance County.
               </p>
               <div className="button-row">
                 <Link className="button button-brick" href="/my-story">
@@ -45,7 +47,9 @@ export default function HomePage() {
                   Volunteer
                 </Link>
               </div>
-              <p className="hero-note">Independent leadership. Measurable results.</p>
+              <p className="hero-note">
+                Rooted in Henderson. Ready to serve District 3.
+              </p>
             </div>
 
             <div className="hero-portrait">

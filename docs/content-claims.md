@@ -11,6 +11,9 @@ written approval before production launch.
 | bio-001 | CJ is a U.S. Army combat veteran and served in the North Carolina National Guard | Campaign biography and client update | CJ Turrentine | Client approval pending | 2026-07-27 |
 | bio-002 | CJ served in Iraq | Existing campaign biography | CJ Turrentine | Client approval pending | 2026-07-27 |
 | bio-003 | CJ overcame combat-related brain injuries | Client written update | CJ Turrentine | Client approval pending; no added medical detail | 2026-07-27 |
+| bio-004 | CJ identifies himself as a disabled U.S. Army combat veteran and survivor of combat and a life-changing accident | Candidate statement supplied to campaign | CJ Turrentine | Approved candidate wording; keep medical detail limited to the supplied statement | 2026-07-29 |
+| bio-005 | CJ describes himself as a proud son of Henderson and “Henderson's biggest cheerleader” | Candidate statement supplied to campaign | CJ Turrentine | Approved candidate wording | 2026-07-29 |
+| campaign-001 | CJ is running to expand opportunity, support families, and build a safer, stronger Vance County | Candidate statement supplied to campaign | CJ Turrentine | Approved candidate wording | 2026-07-29 |
 | youth-001 | More than twelve community read-ins | Client written update | CJ Turrentine | Client approval pending | 2026-07-27 |
 | youth-002 | Youth participation grew from 4 in 2025 to more than 60 today | Client written update | CJ Turrentine | Client approval pending | 2026-07-27 |
 | youth-003 | Weekly youth touchpoints through AIM High and Park and Play | Client written update | CJ Turrentine | Client approval pending | 2026-07-27 |
