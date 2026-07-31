@@ -219,6 +219,27 @@ describe("campaign contribution ledger migration", () => {
     expect(events.rows[0].count).toBe(0);
   });
 
+  it("surfaces incomplete review rows so the export fails closed", async () => {
+    const reservation = await reserve(
+      "00000000-0000-4000-8000-000000000060",
+      500,
+    );
+    await database.query(
+      `update public.campaign_contributions
+          set status = 'requires_review'
+        where id = $1::uuid`,
+      [reservation.contribution?.id],
+    );
+
+    const reviewRows = await database.query<{ count: number }>(
+      `select count(*)::integer as count
+         from public.campaign_contribution_export
+        where id = $1::uuid`,
+      [reservation.contribution?.id],
+    );
+    expect(reviewRows.rows[0].count).toBe(1);
+  });
+
   async function reserve(clientAttemptId: string, amountCents: number) {
     const result = await database.query<{ result: ReservationResult }>(
       `select public.reserve_online_campaign_contribution(

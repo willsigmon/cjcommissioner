@@ -46,6 +46,14 @@ describe("contribution donor fingerprint", () => {
     expect(fingerprintDonor(differentCity, secret)).not.toBe(
       fingerprintDonor(donor, secret),
     );
+
+    const differentUnit = {
+      ...donor,
+      address: { ...donor.address, line2: "Apartment 4" },
+    };
+    expect(fingerprintDonor(differentUnit, secret)).not.toBe(
+      fingerprintDonor(donor, secret),
+    );
   });
 
   it("does not expose donor identity in the fingerprint", () => {

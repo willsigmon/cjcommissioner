@@ -95,6 +95,7 @@ export async function POST(request: Request) {
   const donor = validated.data;
   let contributionId: string | null = null;
   let phase = "reserve";
+  let retryWithNewAttempt = false;
 
   try {
     const contribution = await reserveContribution(
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
     contributionId = contribution.id;
     phase = "stripe_session";
     const siteUrl = getCanonicalSiteUrl();
-    const expiresAt = Math.floor(Date.now() / 1_000) + 30 * 60;
+    const expiresAt = Math.floor(Date.now() / 1_000) + 31 * 60;
     const session = await getStripe().checkout.sessions.create(
       buildContributionCheckoutSession(
         donor,
@@ -164,6 +165,7 @@ export async function POST(request: Request) {
     if (contributionId) {
       try {
         await markContributionFailed(contributionId);
+        retryWithNewAttempt = true;
       } catch (storeError) {
         console.error("Failed to mark contribution attempt as failed.", {
           contributionId,
@@ -183,6 +185,7 @@ export async function POST(request: Request) {
         ok: false,
         message:
           "The secure payment form is temporarily unavailable. No contribution was processed.",
+        retryWithNewAttempt,
       },
       { status: 503 },
     );

@@ -3,7 +3,12 @@ import { timingSafeEqual } from "node:crypto";
 export function isDonationAdminAuthorized(request: Request) {
   const expected = process.env.DONATION_EXPORT_TOKEN?.trim();
   const authorization = request.headers.get("authorization");
-  if (!expected || expected.length < 32 || !authorization?.startsWith("Bearer ")) {
+  if (
+    !expected ||
+    expected.length < 32 ||
+    expected === "replace_with_at_least_32_random_characters" ||
+    !authorization?.startsWith("Bearer ")
+  ) {
     return false;
   }
 

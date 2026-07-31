@@ -25,4 +25,12 @@ describe("donation admin authorization", () => {
     vi.stubEnv("DONATION_EXPORT_TOKEN", "too-short");
     expect(isDonationAdminAuthorized(request("Bearer too-short"))).toBe(false);
   });
+
+  it("rejects the previously published example value", () => {
+    const placeholder = "replace_with_at_least_32_random_characters";
+    vi.stubEnv("DONATION_EXPORT_TOKEN", placeholder);
+    expect(isDonationAdminAuthorized(request(`Bearer ${placeholder}`))).toBe(
+      false,
+    );
+  });
 });

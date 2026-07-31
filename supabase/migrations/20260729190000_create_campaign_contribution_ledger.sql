@@ -575,7 +575,10 @@ with accepted_contributions as (
     'refunded',
     'requires_review'
   )
-    and contribution.paid_at is not null
+    and (
+      contribution.status = 'requires_review'
+      or contribution.paid_at is not null
+    )
 )
 select
   id,

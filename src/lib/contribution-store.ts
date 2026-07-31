@@ -74,6 +74,7 @@ function getConfig() {
     !serviceRoleKey ||
     !fingerprintSecret ||
     fingerprintSecret.length < 32 ||
+    fingerprintSecret === "replace_with_at_least_32_random_characters" ||
     !electionSlug
   ) {
     throw new ContributionStoreError(
@@ -133,6 +134,7 @@ export function fingerprintDonor(
   const identity = [
     normalizeIdentityPart(donor.fullName),
     normalizeStreetIdentity(donor.address.line1),
+    normalizeStreetIdentity(donor.address.line2 ?? ""),
     normalizeIdentityPart(donor.address.city),
     normalizeIdentityPart(donor.address.state),
     normalizeIdentityPart(donor.address.postalCode),
