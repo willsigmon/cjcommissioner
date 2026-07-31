@@ -35,6 +35,8 @@ describe("Stripe production readiness", () => {
     vi.stubEnv("DONATIONS_ENABLED", "true");
     vi.stubEnv("TREASURER_COPY_APPROVED", "true");
     vi.stubEnv("CONTRIBUTION_HISTORY_RECONCILED", "true");
+    vi.stubEnv("TREASURER_APPROVED_POLICY_VERSION", "2026-07-31-v1");
+    vi.stubEnv("RECONCILED_ELECTION_SLUG", "2026-general");
     vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_test");
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://www.cjcommissioner.com");
     vi.stubEnv("VERCEL_DONATION_RATE_LIMIT_ID", "donation-session");
@@ -98,6 +100,24 @@ describe("Stripe production readiness", () => {
     vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
     vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
     vi.stubEnv("CONTRIBUTION_HISTORY_RECONCILED", "false");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
+  it("stays closed when approval refers to different policy copy", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    vi.stubEnv("TREASURER_APPROVED_POLICY_VERSION", "outdated-copy");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
+  it("stays closed when reconciliation refers to a different election", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    vi.stubEnv("RECONCILED_ELECTION_SLUG", "2026-primary");
     expect(donationsAreEnabled()).toBe(false);
   });
 });

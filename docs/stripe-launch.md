@@ -37,7 +37,9 @@ This checklist is intentionally fail-closed. Do not set the launch flags to
 6. Import or reconcile earlier contributions for the election before launch.
 7. Set `CONTRIBUTION_HISTORY_RECONCILED=true` only after the treasurer confirms
    those records are represented in the donor totals.
-8. Keep `DONATION_ELECTION_SLUG` fixed for the election. Change it only at the
+8. Set `RECONCILED_ELECTION_SLUG` to the exact reconciled
+   `DONATION_ELECTION_SLUG`. A mismatch keeps contributions closed.
+9. Keep `DONATION_ELECTION_SLUG` fixed for the election. Change it only at the
    treasurer-confirmed election boundary and reconcile the next election ledger
    before reopening contributions.
 
@@ -65,6 +67,9 @@ This checklist is intentionally fail-closed. Do not set the launch flags to
 8. Set `DONATIONS_ENABLED=true` in Preview. Set
    `TREASURER_COPY_APPROVED=true` only after the copy is approved, and set
    `CONTRIBUTION_HISTORY_RECONCILED=true` only for a reconciled test ledger.
+   Set the matching `TREASURER_APPROVED_POLICY_VERSION` and
+   `RECONCILED_ELECTION_SLUG` values too; the readiness check fails closed on a
+   stale approval or different election.
 9. Verify:
    - successful card contribution
    - declined card
@@ -92,10 +97,15 @@ This checklist is intentionally fail-closed. Do not set the launch flags to
 4. Set `NEXT_PUBLIC_SITE_URL=https://www.cjcommissioner.com`.
 5. Set
    `ALLOWED_ORIGINS=https://cjcommissioner.com,https://www.cjcommissioner.com`.
-6. Deploy with both launch flags still `false`.
+6. Deploy with all launch flags still `false`.
 7. Verify the closed state and production configuration.
-8. Set `TREASURER_COPY_APPROVED=true`.
-9. Set `CONTRIBUTION_HISTORY_RECONCILED=true`.
+8. Set `TREASURER_COPY_APPROVED=true` and
+   `TREASURER_APPROVED_POLICY_VERSION=2026-07-31-v1` only after the treasurer
+   approves that exact policy copy. Any copy change requires a new version and
+   approval.
+9. Set `CONTRIBUTION_HISTORY_RECONCILED=true` and
+   `RECONCILED_ELECTION_SLUG=2026-general` only after reconciling that exact
+   election.
 10. Set `DONATIONS_ENABLED=true` last and redeploy.
 11. Complete one treasurer-authorized lawful live contribution.
 12. Verify the Stripe payment, webhook delivery, contribution ledger, donor
@@ -141,6 +151,24 @@ marks them paid, failed, or expired. This fail-closed behavior prevents a delaye
 payment webhook from reopening capacity and allowing a donor over the cap. If a
 terminal webhook is missed, reconcile the Stripe session before manually changing
 the ledger; do not release a pending hold based on wall-clock age alone.
+
+## Stripe ledger reconciliation
+
+The paid success page attempts an idempotent repair from Stripe, but it is not a
+substitute for webhook monitoring. Run the protected reconciliation before every
+export and after any webhook outage or Stripe/ledger discrepancy:
+
+```bash
+curl --fail --show-error -X POST \
+  -H "Authorization: Bearer $DONATION_EXPORT_TOKEN" \
+  https://www.cjcommissioner.com/api/admin/contributions/reconcile
+```
+
+The endpoint retrieves the current election's Checkout Sessions and charges
+directly from Stripe, then repairs paid, expired, and refunded ledger state with
+idempotent synthetic event IDs. A `409` response means at least one record could
+not be reconciled and requires campaign review; do not export or alter the ledger
+manually until every error is resolved.
 
 ## Legal references
 

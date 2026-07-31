@@ -151,15 +151,7 @@ export async function POST(request: Request) {
         {
           ok: false,
           message:
-            error.remainingCents > 0
-              ? `Campaign records show that no more than ${new Intl.NumberFormat(
-                  "en-US",
-                  {
-                    style: "currency",
-                    currency: "USD",
-                  },
-                ).format(error.remainingCents / 100)} remains under this contributor's current online limit. Contact the campaign if this appears incorrect.`
-              : "Campaign records show that this contributor has reached the current online contribution limit. Contact the campaign if this appears incorrect.",
+            "Campaign records cannot accept this contribution amount under the current online limit. Choose a lower amount or contact the campaign if this appears incorrect.",
           fields: {
             amountCents:
               "Choose an amount within the remaining limit or contact the campaign.",

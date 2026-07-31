@@ -1,31 +1,15 @@
-import { timingSafeEqual } from "node:crypto";
 import {
   ContributionExportIncompleteError,
   getContributionExportRows,
   serializeContributionCsv,
 } from "@/lib/contribution-export";
+import { isDonationAdminAuthorized } from "@/lib/donation-admin-auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function isAuthorized(request: Request) {
-  const expected = process.env.DONATION_EXPORT_TOKEN?.trim();
-  const authorization = request.headers.get("authorization");
-  if (!expected || expected.length < 32 || !authorization?.startsWith("Bearer ")) {
-    return false;
-  }
-
-  const supplied = authorization.slice("Bearer ".length).trim();
-  const suppliedBuffer = Buffer.from(supplied);
-  const expectedBuffer = Buffer.from(expected);
-  return (
-    suppliedBuffer.length === expectedBuffer.length &&
-    timingSafeEqual(suppliedBuffer, expectedBuffer)
-  );
-}
-
 export async function GET(request: Request) {
-  if (!isAuthorized(request)) {
+  if (!isDonationAdminAuthorized(request)) {
     return Response.json(
       { ok: false, message: "Contribution export authorization failed." },
       {

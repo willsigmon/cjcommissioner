@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { contributionStoreIsConfigured } from "./contribution-store";
+import { DONATION_POLICY_VERSION } from "./donation-policy";
 
 let stripe: Stripe | undefined;
 
@@ -24,10 +25,17 @@ export function getCanonicalSiteUrl() {
 }
 
 export function donationsAreEnabled() {
+  const electionSlug = process.env.DONATION_ELECTION_SLUG?.trim();
   const enabled =
     process.env.DONATIONS_ENABLED === "true" &&
     process.env.TREASURER_COPY_APPROVED === "true" &&
     process.env.CONTRIBUTION_HISTORY_RECONCILED === "true" &&
+    process.env.TREASURER_APPROVED_POLICY_VERSION?.trim() ===
+      DONATION_POLICY_VERSION &&
+    Boolean(
+      electionSlug &&
+        process.env.RECONCILED_ELECTION_SLUG?.trim() === electionSlug,
+    ) &&
     Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.trim()) &&
     Boolean(process.env.STRIPE_SECRET_KEY?.trim()) &&
     Boolean(process.env.STRIPE_WEBHOOK_SECRET?.trim()) &&
