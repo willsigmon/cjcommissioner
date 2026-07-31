@@ -146,6 +146,48 @@ begin
       return jsonb_build_object('ok', false, 'reason', 'request_conflict');
     end if;
 
+    select coalesce(
+      sum(
+        case
+          when status = 'pending' and pending_expires_at > now()
+            then amount_cents - refunded_cents
+          when status in (
+            'paid',
+            'partially_refunded',
+            'refunded',
+            'requires_review',
+            'failed',
+            'expired'
+          ) then amount_cents - refunded_cents
+          else 0
+        end
+      ),
+      0
+    )::integer
+      into v_reserved_cents
+      from public.campaign_contributions
+     where election_slug = p_election_slug
+       and donor_fingerprint = p_donor_fingerprint
+       and id <> v_existing.id
+       and status in (
+         'pending',
+         'paid',
+         'partially_refunded',
+         'refunded',
+         'requires_review',
+         'failed',
+         'expired'
+       );
+
+    v_remaining_cents := greatest(p_max_cents - v_reserved_cents, 0);
+    if p_amount_cents > v_remaining_cents then
+      return jsonb_build_object(
+        'ok', false,
+        'reason', 'contribution_limit_exceeded',
+        'remaining_cents', v_remaining_cents
+      );
+    end if;
+
     return jsonb_build_object(
       'ok', true,
       'contribution', to_jsonb(v_existing),
@@ -168,6 +210,48 @@ begin
       return jsonb_build_object('ok', false, 'reason', 'request_conflict');
     end if;
 
+    select coalesce(
+      sum(
+        case
+          when status = 'pending' and pending_expires_at > now()
+            then amount_cents - refunded_cents
+          when status in (
+            'paid',
+            'partially_refunded',
+            'refunded',
+            'requires_review',
+            'failed',
+            'expired'
+          ) then amount_cents - refunded_cents
+          else 0
+        end
+      ),
+      0
+    )::integer
+      into v_reserved_cents
+      from public.campaign_contributions
+     where election_slug = p_election_slug
+       and donor_fingerprint = p_donor_fingerprint
+       and id <> v_existing.id
+       and status in (
+         'pending',
+         'paid',
+         'partially_refunded',
+         'refunded',
+         'requires_review',
+         'failed',
+         'expired'
+       );
+
+    v_remaining_cents := greatest(p_max_cents - v_reserved_cents, 0);
+    if p_amount_cents > v_remaining_cents then
+      return jsonb_build_object(
+        'ok', false,
+        'reason', 'contribution_limit_exceeded',
+        'remaining_cents', v_remaining_cents
+      );
+    end if;
+
     return jsonb_build_object(
       'ok', true,
       'contribution', to_jsonb(v_existing),
@@ -179,13 +263,15 @@ begin
     sum(
       case
         when status = 'pending' and pending_expires_at > now()
-          then amount_cents
+          then amount_cents - refunded_cents
         when status in (
           'paid',
           'partially_refunded',
           'refunded',
-          'requires_review'
-        ) then amount_cents
+          'requires_review',
+          'failed',
+          'expired'
+        ) then amount_cents - refunded_cents
         else 0
       end
     ),
@@ -200,7 +286,9 @@ begin
        'paid',
        'partially_refunded',
        'refunded',
-       'requires_review'
+       'requires_review',
+       'failed',
+       'expired'
      );
 
   v_remaining_cents := greatest(p_max_cents - v_reserved_cents, 0);
@@ -571,12 +659,12 @@ as
 with accepted_contributions as (
   select
     contribution.*,
-    sum(contribution.amount_cents) over (
+    sum(contribution.amount_cents - contribution.refunded_cents) over (
       partition by contribution.election_slug, contribution.donor_fingerprint
       order by contribution.paid_at, contribution.id
       rows between unbounded preceding and current row
     )::integer as donor_running_total_cents,
-    sum(contribution.amount_cents) over (
+    sum(contribution.amount_cents - contribution.refunded_cents) over (
       partition by contribution.election_slug, contribution.donor_fingerprint
     )::integer as donor_election_total_cents
   from public.campaign_contributions contribution
