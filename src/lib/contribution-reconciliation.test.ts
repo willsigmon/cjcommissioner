@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildReconciledChargeUpdate,
   buildReconciledExpiredUpdate,
+  reconciliationIsComplete,
 } from "./contribution-reconciliation";
 
 const session = {
@@ -32,6 +33,19 @@ function charge(overrides: Partial<Stripe.Charge> = {}) {
 }
 
 describe("Stripe contribution reconciliation", () => {
+  it("remains unresolved while review rows or errors exist", () => {
+    const complete = {
+      errors: 0,
+      expired: 0,
+      paid: 1,
+      reviewed: 0,
+      unchanged: 0,
+    };
+    expect(reconciliationIsComplete(complete)).toBe(true);
+    expect(reconciliationIsComplete({ ...complete, reviewed: 1 })).toBe(false);
+    expect(reconciliationIsComplete({ ...complete, errors: 1 })).toBe(false);
+  });
+
   it("rebuilds a complete paid ledger update from Stripe", () => {
     expect(buildReconciledChargeUpdate(session, charge(), 1_800_000_100)).toMatchObject({
       stripeEventId: "reconcile:ch_test_reconcile:0",

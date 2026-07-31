@@ -18,6 +18,10 @@ export type ReconciliationSummary = {
   unchanged: number;
 };
 
+export function reconciliationIsComplete(summary: ReconciliationSummary) {
+  return summary.errors === 0 && summary.reviewed === 0;
+}
+
 function getLedgerConfig() {
   const url = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();

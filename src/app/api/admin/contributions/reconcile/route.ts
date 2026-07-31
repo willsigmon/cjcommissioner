@@ -1,4 +1,7 @@
-import { reconcileCampaignContributions } from "@/lib/contribution-reconciliation";
+import {
+  reconcileCampaignContributions,
+  reconciliationIsComplete,
+} from "@/lib/contribution-reconciliation";
 import { isDonationAdminAuthorized } from "@/lib/donation-admin-auth";
 
 export const runtime = "nodejs";
@@ -20,10 +23,11 @@ export async function POST(request: Request) {
 
   try {
     const summary = await reconcileCampaignContributions();
+    const complete = reconciliationIsComplete(summary);
     return Response.json(
-      { ok: summary.errors === 0, summary },
+      { ok: complete, summary },
       {
-        status: summary.errors === 0 ? 200 : 409,
+        status: complete ? 200 : 409,
         headers: { "Cache-Control": "private, no-store, max-age=0" },
       },
     );
