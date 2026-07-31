@@ -159,21 +159,3 @@ export const storyPhotos: CampaignPhoto[] = [
     src: "/photos/veterans-community-archive.webp",
   },
 ];
-
-export const campaignMaterials = [
-  {
-    alt: "Campaign sign concept for Charles CJ Turrentine Jr. for District 3 Commissioner",
-    label: "Campaign sign concept",
-    src: "/photos/campaign-sign.webp",
-  },
-  {
-    alt: "Navy campaign shirt concept shown from the front and back",
-    label: "Navy shirt concept",
-    src: "/photos/campaign-shirt-navy.webp",
-  },
-  {
-    alt: "White campaign shirt concept shown from the front and back",
-    label: "White shirt concept",
-    src: "/photos/campaign-shirt-white.webp",
-  },
-] as const;

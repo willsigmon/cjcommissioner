@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { reconcileStripeSession } from "@/lib/contribution-reconciliation";
 import { getStripe } from "@/lib/stripe";
 
 type SuccessPageProps = {
@@ -17,8 +18,20 @@ export default async function DonationSuccessPage({
   if (sessionId?.startsWith("cs_")) {
     try {
       const session = await getStripe().checkout.sessions.retrieve(sessionId);
-      verified = session.payment_status === "paid";
-      if (typeof session.amount_total === "number") {
+      verified =
+        session.payment_status === "paid" &&
+        Boolean(session.metadata?.contribution_id) &&
+        session.metadata?.election_slug ===
+          process.env.DONATION_ELECTION_SLUG?.trim();
+      if (verified && typeof session.amount_total === "number") {
+        try {
+          await reconcileStripeSession(session);
+        } catch (error) {
+          console.error("Paid contribution ledger reconciliation failed.", {
+            contributionId: session.metadata?.contribution_id,
+            error: error instanceof Error ? error.name : "UnknownError",
+          });
+        }
         amount = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",

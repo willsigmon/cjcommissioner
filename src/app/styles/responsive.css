@@ -298,14 +298,6 @@
     grid-column: 1 / -1;
   }
 
-  .materials-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .materials-grid .material-sign {
-    grid-column: auto;
-  }
-
   .state-page .button-row {
     align-items: stretch;
     flex-direction: column;

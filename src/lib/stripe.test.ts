@@ -1,6 +1,10 @@
 import Stripe from "stripe";
-import { describe, expect, it } from "vitest";
-import { classifyWebhookEvent } from "./stripe";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { donationsAreEnabled } from "./stripe";
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
 
 describe("Stripe webhook verification", () => {
   it("accepts a valid test signature and rejects a changed payload", () => {
@@ -24,14 +28,96 @@ describe("Stripe webhook verification", () => {
       stripe.webhooks.constructEvent(`${payload} `, header, secret),
     ).toThrow();
   });
+});
 
-  it("classifies relevant event types without side effects", () => {
-    const event = {
-      type: "checkout.session.async_payment_failed",
-    } as Stripe.Event;
-    expect(classifyWebhookEvent(event)).toBe("failed");
-    expect(
-      classifyWebhookEvent({ type: "customer.created" } as Stripe.Event),
-    ).toBe("ignored");
+describe("Stripe production readiness", () => {
+  function configureRequiredEnvironment() {
+    vi.stubEnv("DONATIONS_ENABLED", "true");
+    vi.stubEnv("TREASURER_COPY_APPROVED", "true");
+    vi.stubEnv("CONTRIBUTION_HISTORY_RECONCILED", "true");
+    vi.stubEnv("TREASURER_APPROVED_POLICY_VERSION", "2026-07-31-v1");
+    vi.stubEnv("RECONCILED_ELECTION_SLUG", "2026-general");
+    vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_test");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://www.cjcommissioner.com");
+    vi.stubEnv("VERCEL_DONATION_RATE_LIMIT_ID", "donation-session");
+    vi.stubEnv("SUPABASE_URL", "https://campaign.supabase.co");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service-role-key");
+    vi.stubEnv(
+      "DONATION_FINGERPRINT_SECRET",
+      "test-secret-that-is-longer-than-32-characters",
+    );
+    vi.stubEnv("DONATION_ELECTION_SLUG", "2026-general");
+    vi.stubEnv(
+      "DONATION_EXPORT_TOKEN",
+      "test-export-token-that-is-longer-than-32-characters",
+    );
+  }
+
+  it("fails closed on test keys in Vercel production", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_test_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_example");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
+  it("opens only when every production gate and live key is present", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    expect(donationsAreEnabled()).toBe(true);
+  });
+
+  it("opens Preview only with test keys", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_test_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_example");
+    expect(donationsAreEnabled()).toBe(true);
+  });
+
+  it("rejects live keys outside Vercel production", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
+  it("stays closed when the protected treasurer export is not configured", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    vi.stubEnv("DONATION_EXPORT_TOKEN", "");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
+  it("stays closed until earlier contributions are reconciled", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    vi.stubEnv("CONTRIBUTION_HISTORY_RECONCILED", "false");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
+  it("stays closed when approval refers to different policy copy", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    vi.stubEnv("TREASURER_APPROVED_POLICY_VERSION", "outdated-copy");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
+  it("stays closed when reconciliation refers to a different election", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    vi.stubEnv("RECONCILED_ELECTION_SLUG", "2026-primary");
+    expect(donationsAreEnabled()).toBe(false);
   });
 });

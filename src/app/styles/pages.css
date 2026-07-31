@@ -209,6 +209,10 @@
   background: var(--gold);
 }
 
+.donate-hero .page-deck {
+  color: var(--ink);
+}
+
 .donate-section {
   padding-block: clamp(72px, 9vw, 120px);
 }
@@ -268,6 +272,20 @@
 
 .donation-form .field-error {
   color: var(--brick);
+}
+
+.reporting-disclosure {
+  background: #eef5fb;
+  border-left: 4px solid var(--blue);
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+}
+
+.reporting-disclosure p {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0;
 }
 
 .amount-grid {
@@ -390,59 +408,6 @@
 .checkout-panel {
   display: grid;
   gap: 28px;
-}
-
-.campaign-materials-section {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.campaign-materials-section .split-header > p {
-  color: rgb(255 253 247 / 72%);
-}
-
-.materials-grid {
-  display: grid;
-  gap: 32px 24px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.materials-grid figure {
-  margin: 0;
-}
-
-.materials-grid .material-sign {
-  grid-column: 1 / -1;
-}
-
-.material-frame {
-  background: #f2f0ed;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-}
-
-.material-sign .material-frame {
-  aspect-ratio: 4 / 3;
-}
-
-.materials-grid figure:not(.material-sign) .material-frame {
-  aspect-ratio: 5 / 4;
-}
-
-.material-frame img {
-  object-fit: contain;
-}
-
-.materials-grid figcaption {
-  border-top: 1px solid rgb(255 255 255 / 34%);
-  color: rgb(255 253 247 / 72%);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-top: 12px;
-  padding-top: 12px;
-  text-transform: uppercase;
 }
 
 .checkout-summary {

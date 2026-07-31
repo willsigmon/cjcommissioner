@@ -1,9 +1,18 @@
+import { checkRateLimit } from "@vercel/firewall";
 import { NextResponse } from "next/server";
+import {
+  attachStripeSession,
+  ContributionAttemptTerminalError,
+  ContributionLimitError,
+  markContributionFailed,
+  reserveContribution,
+} from "@/lib/contribution-store";
 import {
   donationsAreEnabled,
   getCanonicalSiteUrl,
   getStripe,
 } from "@/lib/stripe";
+import { buildContributionCheckoutSession } from "@/lib/donation-session";
 import { isAllowedOrigin, validateDonationPayload } from "@/lib/validation";
 
 export const runtime = "nodejs";
@@ -22,6 +31,40 @@ export async function POST(request: Request) {
         ok: false,
         message:
           "Online contributions are not open yet. Campaign and treasurer setup is still in progress.",
+      },
+      { status: 503 },
+    );
+  }
+
+  const rateLimitId = process.env.VERCEL_DONATION_RATE_LIMIT_ID?.trim();
+  if (rateLimitId) {
+    const result = await checkRateLimit(rateLimitId, { request });
+    if (result.rateLimited) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message:
+            "Too many contribution attempts. Please wait ten minutes and try again.",
+        },
+        { status: 429 },
+      );
+    }
+    if (result.error && process.env.NODE_ENV === "production") {
+      return NextResponse.json(
+        {
+          ok: false,
+          message:
+            "The secure contribution form is temporarily unavailable. No contribution was processed.",
+        },
+        { status: 503 },
+      );
+    }
+  } else if (process.env.NODE_ENV === "production") {
+    return NextResponse.json(
+      {
+        ok: false,
+        message:
+          "The secure contribution form is temporarily unavailable. No contribution was processed.",
       },
       { status: 503 },
     );
@@ -49,69 +92,100 @@ export async function POST(request: Request) {
     );
   }
 
+  const donor = validated.data;
+  let contributionId: string | null = null;
+  let phase = "reserve";
+  let retryWithNewAttempt = false;
+
   try {
-    const donor = validated.data;
+    const contribution = await reserveContribution(
+      donor,
+      donor.clientAttemptId,
+    );
+    contributionId = contribution.id;
+    phase = "stripe_session";
     const siteUrl = getCanonicalSiteUrl();
-    const session = await getStripe().checkout.sessions.create({
-      ui_mode: "elements",
-      mode: "payment",
-      customer_email: donor.email,
-      client_reference_id: crypto.randomUUID(),
-      line_items: [
-        {
-          quantity: 1,
-          price_data: {
-            currency: "usd",
-            unit_amount: donor.amountCents,
-            product_data: {
-              name: "Campaign contribution",
-              description: "CJ Turrentine for Vance County Commissioner, District 3",
-            },
-          },
-        },
-      ],
-      return_url: `${siteUrl}/donate/success?session_id={CHECKOUT_SESSION_ID}`,
-      metadata: {
-        donor_name: donor.fullName,
-        donor_phone: donor.phone ?? "",
-        mailing_line1: donor.address.line1,
-        mailing_line2: donor.address.line2 ?? "",
-        mailing_city: donor.address.city,
-        mailing_state: donor.address.state,
-        mailing_postal_code: donor.address.postalCode,
-        occupation: donor.occupation,
-        employer: donor.employer,
-        amount_cents: String(donor.amountCents),
-        personal_funds_attested: "true",
-        own_name_attested: "true",
-        lawful_source_attested: "true",
-        limit_acknowledged: "true",
+    const expiresAt = Math.floor(Date.now() / 1_000) + 31 * 60;
+    const session = await getStripe().checkout.sessions.create(
+      buildContributionCheckoutSession(
+        donor,
+        contribution,
+        siteUrl,
+        expiresAt,
+      ),
+      {
+        idempotencyKey: `campaign-contribution-${contribution.id}`,
       },
-      payment_intent_data: {
-        metadata: {
-          donor_name: donor.fullName,
-          occupation: donor.occupation,
-          employer: donor.employer,
-          campaign: "CJ Turrentine for Commissioner",
-        },
-      },
-    });
+    );
 
     if (!session.client_secret) {
       throw new Error("Stripe did not return a Checkout client secret.");
     }
+
+    phase = "ledger_attach";
+    await attachStripeSession(contribution.id, {
+      id: session.id,
+      livemode: session.livemode,
+      expiresAt: session.expires_at,
+    });
 
     return NextResponse.json({
       ok: true,
       clientSecret: session.client_secret,
       sessionId: session.id,
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof ContributionAttemptTerminalError) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message:
+            "That payment attempt is no longer active. Review the amount and continue again to start a new secure payment.",
+          retryWithNewAttempt: true,
+        },
+        { status: 409 },
+      );
+    }
+
+    if (error instanceof ContributionLimitError) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message:
+            "Campaign records cannot accept this contribution amount under the current online limit. Choose a lower amount or contact the campaign if this appears incorrect.",
+          fields: {
+            amountCents:
+              "Choose an amount within the remaining limit or contact the campaign.",
+          },
+        },
+        { status: 409 },
+      );
+    }
+
+    if (contributionId) {
+      try {
+        await markContributionFailed(contributionId);
+        retryWithNewAttempt = true;
+      } catch (storeError) {
+        console.error("Failed to mark contribution attempt as failed.", {
+          contributionId,
+          error:
+            storeError instanceof Error ? storeError.name : "UnknownError",
+        });
+      }
+    }
+
+    console.error("Contribution session creation failed.", {
+      contributionId,
+      error: error instanceof Error ? error.name : "UnknownError",
+      phase,
+    });
     return NextResponse.json(
       {
         ok: false,
         message:
           "The secure payment form is temporarily unavailable. No contribution was processed.",
+        retryWithNewAttempt,
       },
       { status: 503 },
     );

@@ -2,8 +2,9 @@
 
 Campaign website for "CJ Turrentine for Vance County Commissioner, District 3".
 Single Next.js 16 (App Router) + React 19 + TypeScript + Tailwind CSS 4 app. Package
-manager is npm. Dev server runs on port 3000. No database or docker; the only
-external integrations are Stripe (donations) and Google Sheets (volunteer signups).
+manager is npm. Dev server runs on port 3000. There is no local Docker stack. The
+external integrations are Stripe (donations), a campaign-dedicated Supabase
+contribution ledger, and Google Sheets (volunteer signups).
 
 Standard commands live in `package.json` scripts: `dev`, `build`, `start`, `lint`,
 `typecheck`, `test`, and `verify` (lint + typecheck + test + build). Setup is
@@ -42,11 +43,13 @@ Both conversion flows are gated and need secrets that are intentionally absent i
   valid submission still exercises client → API → validation and returns a graceful
   503 ("could not save … call or email") — that 503 is expected locally, not a bug.
 - **Donations** (`/api/donations/session` → `src/lib/stripe.ts`): requires Stripe
-  **test** keys (`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`) AND both
-  flags `DONATIONS_ENABLED=true` and `TREASURER_COPY_APPROVED=true`. Missing either
-  returns 503. A bank routing/account number is NOT a code credential — it is added by
-  the account owner in the Stripe Dashboard for payouts and is not needed for
-  test-mode donations.
+  **test** keys (`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`), the
+  Stripe webhook secret, the Supabase service-role configuration, the export and
+  donor-fingerprint secrets, a donation rate-limit rule, and all three launch flags:
+  `DONATIONS_ENABLED=true`, `TREASURER_COPY_APPROVED=true`, and
+  `CONTRIBUTION_HISTORY_RECONCILED=true`. Missing any required setting returns 503.
+  A bank routing/account number is NOT a code credential — it is added by the account
+  owner in the Stripe Dashboard for payouts and is not needed for test-mode donations.
 - In development, `isAllowedOrigin` (`src/lib/validation.ts`) auto-allows
   `localhost:3000/3001` and `127.0.0.1`, so API POSTs from the local dev server pass
   the origin check without production URLs.
