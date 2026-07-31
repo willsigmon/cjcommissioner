@@ -10,6 +10,10 @@ import {
 } from "@stripe/react-stripe-js/checkout";
 import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
+import {
+  DONATION_ELIGIBILITY_ATTESTATION,
+  DONATION_REPORTING_DISCLOSURE,
+} from "@/lib/donation-policy";
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
@@ -27,12 +31,13 @@ type DonorDefaults = {
   };
 };
 
-export function DonationForm() {
+export function DonationForm({ enabled }: { enabled: boolean }) {
   const [selectedAmount, setSelectedAmount] = useState<number | "other">(100);
   const [otherAmount, setOtherAmount] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [message, setMessage] = useState("");
   const [fields, setFields] = useState<Record<string, string>>({});
+  const [clientAttemptId, setClientAttemptId] = useState<string | null>(null);
   const [checkout, setCheckout] = useState<{
     clientSecret: string;
     defaults: DonorDefaults;
@@ -44,7 +49,7 @@ export function DonationForm() {
     return Number.isFinite(amount) ? Math.round(amount * 100) : 0;
   }, [otherAmount, selectedAmount]);
 
-  if (!publishableKey) {
+  if (!enabled || !publishableKey) {
     return (
       <div className="setup-notice" role="status">
         <strong>Online contributions are opening soon.</strong>
@@ -71,20 +76,17 @@ export function DonationForm() {
         postalCode: String(formData.get("postalCode") ?? ""),
       },
     };
+    const attemptId = clientAttemptId ?? crypto.randomUUID();
+    if (!clientAttemptId) setClientAttemptId(attemptId);
     const payload = {
+      clientAttemptId: attemptId,
       fullName: defaults.name,
       email: defaults.email,
-      phone: formData.get("phone"),
       address: defaults.address,
       occupation: formData.get("occupation"),
       employer: formData.get("employer"),
       amountCents,
-      attestations: {
-        personalFunds: formData.get("personalFunds") === "on",
-        ownName: formData.get("ownName") === "on",
-        lawfulSource: formData.get("lawfulSource") === "on",
-        limitAcknowledged: formData.get("limitAcknowledged") === "on",
-      },
+      eligibilityConfirmed: formData.get("eligibilityConfirmed") === "on",
     };
 
     setStatus("submitting");
@@ -163,8 +165,28 @@ export function DonationForm() {
   }
 
   return (
-    <form className="donation-form" noValidate onSubmit={createSession}>
-      <fieldset className="amount-fieldset">
+    <form
+      className="donation-form"
+      noValidate
+      onChangeCapture={() => {
+        if (status === "error") setClientAttemptId(null);
+      }}
+      onSubmit={createSession}
+    >
+      <div className="reporting-disclosure">
+        <strong>Required contributor information</strong>
+        <p>{DONATION_REPORTING_DISCLOSURE}</p>
+        <p>
+          All contribution and reporting fields are required. The contribution
+          date, amount, and payment method are recorded automatically when the
+          payment is completed.
+        </p>
+      </div>
+
+      <fieldset
+        aria-describedby={fields.amountCents ? "amount-error" : undefined}
+        className="amount-fieldset"
+      >
         <legend>Choose an amount</legend>
         <div className="amount-grid">
           {presets.map((amount) => (
@@ -209,7 +231,9 @@ export function DonationForm() {
           </label>
         ) : null}
         {fields.amountCents ? (
-          <p className="field-error">{fields.amountCents}</p>
+          <p className="field-error" id="amount-error">
+            {fields.amountCents}
+          </p>
         ) : null}
       </fieldset>
 
@@ -220,14 +244,24 @@ export function DonationForm() {
         </div>
         <p className="form-help">
           North Carolina campaign reporting rules require contributor
-          information. It is sent directly to the campaign&apos;s Stripe record.
+          information. It is stored in the campaign&apos;s private contribution
+          ledger and is not placed in Stripe metadata.
         </p>
         <div className="form-grid">
           <DonationField error={fields.fullName} label="Full legal name" name="fullName" required />
           <DonationField error={fields.email} label="Email" name="email" required type="email" />
-          <DonationField error={fields.phone} label="Phone (optional)" name="phone" type="tel" />
-          <DonationField error={fields.occupation} label="Principal occupation" name="occupation" required />
-          <DonationField error={fields.employer} label="Employer" name="employer" required />
+          <DonationField
+            error={fields.occupation}
+            label="Job title or profession"
+            name="occupation"
+            required
+          />
+          <DonationField
+            error={fields.employer}
+            label="Employer’s name or specified field of business activity"
+            name="employer"
+            required
+          />
         </div>
       </div>
 
@@ -251,28 +285,24 @@ export function DonationForm() {
           <h2>Eligibility</h2>
         </div>
         <p className="form-help">
-          Draft contribution language below requires final treasurer review
-          before live contributions open.
+          Confirm the statement before continuing. The campaign treasurer
+          reviews every contribution for final compliance.
         </p>
-        <div className="attestations">
-          <Attestation name="personalFunds">
-            This contribution is made from my own personal funds.
-          </Attestation>
-          <Attestation name="ownName">
-            I am making this contribution in my own name, not in the name of
-            another person.
-          </Attestation>
-          <Attestation name="lawfulSource">
-            This contribution is not from a corporation, business entity, labor
-            union, or other prohibited source.
-          </Attestation>
-          <Attestation name="limitAcknowledged">
-            I understand that contributions are subject to North Carolina&apos;s
-            per-election contribution limit.
+        <div
+          aria-describedby={
+            fields.eligibilityConfirmed ? "eligibility-error" : undefined
+          }
+          className="attestations"
+          role="group"
+        >
+          <Attestation name="eligibilityConfirmed">
+            {DONATION_ELIGIBILITY_ATTESTATION}
           </Attestation>
         </div>
-        {fields.attestations ? (
-          <p className="field-error">{fields.attestations}</p>
+        {fields.eligibilityConfirmed ? (
+          <p className="field-error" id="eligibility-error">
+            {fields.eligibilityConfirmed}
+          </p>
         ) : null}
       </div>
 
@@ -382,17 +412,24 @@ function DonationField({
   required,
   type = "text",
 }: DonationFieldProps) {
+  const errorId = `${name}-error`;
+
   return (
     <label className="field">
       <span>{label}</span>
       <input
+        aria-describedby={error ? errorId : undefined}
         aria-invalid={Boolean(error)}
         maxLength={maxLength}
         name={name}
         required={required}
         type={type}
       />
-      {error ? <span className="field-error">{error}</span> : null}
+      {error ? (
+        <span className="field-error" id={errorId}>
+          {error}
+        </span>
+      ) : null}
     </label>
   );
 }

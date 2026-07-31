@@ -1,10 +1,16 @@
-export const DONATION_MIN_CENTS = 500;
-export const DONATION_MAX_CENTS = 680_000;
+import {
+  DONATION_MAX_CENTS,
+  DONATION_MIN_CENTS,
+} from "./donation-policy";
+
+export { DONATION_MAX_CENTS, DONATION_MIN_CENTS };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[0-9+().\-\s]{7,24}$/;
 const zipPattern = /^\d{5}(?:-\d{4})?$/;
 const statePattern = /^[A-Za-z]{2}$/;
+const uuidPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 type ValidationSuccess<T> = { ok: true; data: T };
 type ValidationFailure = {
@@ -36,6 +42,7 @@ export type VolunteerSubmission = {
 };
 
 export type DonationSubmission = {
+  clientAttemptId: string;
   fullName: string;
   email: string;
   phone?: string;
@@ -49,12 +56,7 @@ export type DonationSubmission = {
   occupation: string;
   employer: string;
   amountCents: number;
-  attestations: {
-    personalFunds: true;
-    ownName: true;
-    lawfulSource: true;
-    limitAcknowledged: true;
-  };
+  eligibilityConfirmed: true;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -63,6 +65,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function text(value: unknown, maxLength: number) {
   return typeof value === "string" ? value.trim().slice(0, maxLength + 1) : "";
+}
+
+function isPlaceholder(value: string) {
+  return /^(?:anonymous|anon(?:ymous)?|n\/?a|none|not (?:applicable|provided))$/i.test(
+    value,
+  );
 }
 
 export function validateVolunteerPayload(
@@ -175,6 +183,7 @@ export function validateDonationPayload(
   }
 
   const fullName = text(value.fullName, 120);
+  const clientAttemptId = text(value.clientAttemptId, 36);
   const email = text(value.email, 160).toLowerCase();
   const phone = text(value.phone, 24);
   const occupation = text(value.occupation, 120);
@@ -190,12 +199,16 @@ export function validateDonationPayload(
     Number.isSafeInteger(value.amountCents)
       ? value.amountCents
       : 0;
-  const attestationsValue = isRecord(value.attestations)
-    ? value.attestations
-    : {};
   const fields: Record<string, string> = {};
 
-  if (fullName.length < 2 || fullName.length > 120) {
+  if (!uuidPattern.test(clientAttemptId)) {
+    fields.form = "Start a new contribution and try again.";
+  }
+  if (
+    fullName.length < 2 ||
+    fullName.length > 120 ||
+    isPlaceholder(fullName)
+  ) {
     fields.fullName = "Enter your full legal name.";
   }
   if (!emailPattern.test(email) || email.length > 160) {
@@ -204,15 +217,20 @@ export function validateDonationPayload(
   if (phone && !phonePattern.test(phone)) {
     fields.phone = "Enter a valid phone number or leave it blank.";
   }
-  if (!line1) fields.line1 = "Enter your street address.";
-  if (!city) fields.city = "Enter your city.";
+  if (!line1 || isPlaceholder(line1)) {
+    fields.line1 = "Enter your street address.";
+  }
+  if (!city || isPlaceholder(city)) fields.city = "Enter your city.";
   if (!statePattern.test(state)) fields.state = "Use a two-letter state code.";
   if (!zipPattern.test(postalCode)) {
     fields.postalCode = "Enter a valid ZIP code.";
   }
-  if (!occupation) fields.occupation = "Enter your principal occupation.";
-  if (!employer) {
-    fields.employer = "Enter your employer, or “Not employed.”";
+  if (!occupation || isPlaceholder(occupation)) {
+    fields.occupation = "Enter your job title or profession.";
+  }
+  if (!employer || isPlaceholder(employer)) {
+    fields.employer =
+      "Enter your employer’s name or a specified field of business activity.";
   }
   if (
     amountCents < DONATION_MIN_CENTS ||
@@ -221,17 +239,9 @@ export function validateDonationPayload(
     fields.amountCents = "Choose an amount from $5 to $6,800.";
   }
 
-  const requiredAttestations = [
-    "personalFunds",
-    "ownName",
-    "lawfulSource",
-    "limitAcknowledged",
-  ] as const;
-  for (const key of requiredAttestations) {
-    if (attestationsValue[key] !== true) {
-      fields.attestations = "Confirm every eligibility statement to continue.";
-      break;
-    }
+  if (value.eligibilityConfirmed !== true) {
+    fields.eligibilityConfirmed =
+      "Confirm the eligibility statement to continue.";
   }
 
   if (Object.keys(fields).length > 0) {
@@ -245,6 +255,7 @@ export function validateDonationPayload(
   return {
     ok: true,
     data: {
+      clientAttemptId,
       fullName,
       email,
       phone: phone || undefined,
@@ -258,12 +269,7 @@ export function validateDonationPayload(
       occupation,
       employer,
       amountCents,
-      attestations: {
-        personalFunds: true,
-        ownName: true,
-        lawfulSource: true,
-        limitAcknowledged: true,
-      },
+      eligibilityConfirmed: true,
     },
   };
 }

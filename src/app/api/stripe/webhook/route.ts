@@ -1,4 +1,8 @@
-import { classifyWebhookEvent, getStripe } from "@/lib/stripe";
+import type Stripe from "stripe";
+import { recordStripeContributionEvent } from "@/lib/contribution-store";
+import { getStripe } from "@/lib/stripe";
+import { parseStripeContributionEvent } from "@/lib/stripe-event";
+import { enrichStripeContributionUpdate } from "@/lib/stripe-payment";
 
 export const runtime = "nodejs";
 
@@ -11,15 +15,29 @@ export async function POST(request: Request) {
   }
 
   const body = await request.text();
+  let event: Stripe.Event;
   try {
-    const event = getStripe().webhooks.constructEvent(body, signature, secret);
-
-    // These handlers intentionally perform no non-idempotent side effects.
-    // Stripe remains the contribution system of record, so safe event replays
-    // receive the same successful acknowledgement.
-    classifyWebhookEvent(event);
-    return new Response("Received.", { status: 200 });
+    event = getStripe().webhooks.constructEvent(body, signature, secret);
   } catch {
     return new Response("Invalid webhook signature.", { status: 400 });
+  }
+
+  try {
+    const parsed = parseStripeContributionEvent(event);
+    const update = parsed
+      ? await enrichStripeContributionUpdate(getStripe(), parsed)
+      : null;
+    if (!update) {
+      return new Response("Received.", { status: 200 });
+    }
+    await recordStripeContributionEvent(update);
+    return new Response("Received.", { status: 200 });
+  } catch (error) {
+    console.error("Stripe webhook processing failed.", {
+      error: error instanceof Error ? error.name : "UnknownError",
+      eventId: event.id,
+      eventType: event.type,
+    });
+    return new Response("Webhook processing failed.", { status: 500 });
   }
 }

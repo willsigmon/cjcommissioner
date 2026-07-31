@@ -57,8 +57,11 @@ icon tiles, or automatic dark mode.
 - Priorities: four numbered editorial columns
 - District: character-led narrative paired with the existing map
 - Volunteer: straightforward form with honest submission states
-- Donation: reporting fields first, then Stripe Payment Element and Express
-  Checkout when configured
+- Donation: a civic contribution desk with amount and remaining-limit context,
+  the exact required state-law disclosure, required reporting fields, one
+  required eligibility attestation, Stripe Payment Element, and Express
+  Checkout when configured. Campaign merchandise does not appear in the
+  contribution journey.
 - Footer: public address, contact, committee disclaimer, privacy
 
 ## Motion
@@ -94,6 +97,28 @@ icon tiles, or automatic dark mode.
 - Semantic landmarks and disclosure state
 - Errors connected to fields; live regions for async status
 - Keyboard-complete navigation and forms
+
+## Contribution states
+
+- Closed: one concise setup notice; no empty payment shell or misleading enabled
+  control
+- Editing: amount first, then reporting details, address, and eligibility
+- Submitting: disable the primary action and use “Opening secure payment…”
+- Limit review: explain the currently available online amount without exposing
+  prior donor information
+- Payment loading: retain the contribution summary and show a plain status line
+- Payment error: keep donor-entered reporting fields recoverable and show the
+  Stripe error beside the payment action
+- Success: confirm the amount only after server-side Stripe verification
+- Refund/review: direct the donor to the campaign; never promise an automatic
+  refund before treasurer verification
+
+Private donor reporting information belongs in the campaign contribution
+ledger. Stripe metadata contains only opaque contribution and election
+identifiers. The ledger stores only the payment-method category needed for
+reporting, never card numbers, bank account numbers, or wallet credentials. A
+protected treasurer CSV is the sole website export surface and fails closed if a
+completed contribution is missing a required reporting or payment field.
 
 ## QA viewports
 

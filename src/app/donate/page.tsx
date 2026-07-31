@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { DonationForm } from "@/components/donation-form";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { campaignMaterials } from "@/content/photos";
+import { donationsAreEnabled } from "@/lib/stripe";
 
 export const metadata: Metadata = {
   title: "Donate | CJ Turrentine for Commissioner",
@@ -12,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default function DonatePage() {
+  const donationsEnabled = donationsAreEnabled();
+
   return (
     <>
       <SiteHeader />
@@ -19,7 +20,7 @@ export default function DonatePage() {
         <section className="page-hero donate-hero">
           <div className="shell narrow-shell">
             <p className="section-label">Invest in service</p>
-            <h1>Help put proof in the work.</h1>
+            <h1>Put proof to work.</h1>
             <p className="page-deck">
               Your contribution helps the campaign reach District 3 voters,
               organize volunteers, and keep this community-led effort moving.
@@ -32,57 +33,20 @@ export default function DonatePage() {
               <p className="section-label">Before you give</p>
               <h2>Clear. Secure. Accountable.</h2>
               <ul className="check-list">
-                <li>One-time contributions only</li>
-                <li>$5 minimum and $6,800 maximum</li>
+                <li>One-time individual contributions only</li>
+                <li>$5 minimum; up to $6,800 for this election</li>
                 <li>No tips or fee-coverage upsells</li>
-                <li>Cards and eligible digital wallets through Stripe</li>
+                <li>Cards and eligible wallets through Stripe</li>
+                <li>Contributor details protected for required reporting</li>
               </ul>
               <p className="legal-note">
-                Online contributions will open after secure payment setup and
-                final treasurer review are complete.
+                {donationsEnabled
+                  ? "Campaign records are checked against current online contributions. The treasurer reviews every contribution for final compliance."
+                  : "Online contributions remain closed until secure payment setup and final treasurer review are complete."}
               </p>
             </aside>
             <div className="donate-form-wrap">
-              <DonationForm />
-            </div>
-          </div>
-        </section>
-        <section className="section campaign-materials-section">
-          <div className="shell">
-            <header className="section-header split-header">
-              <div>
-                <p className="section-label section-label-light">
-                  Campaign materials
-                </p>
-                <h2>Carry the message into District 3.</h2>
-              </div>
-              <p>
-                Sign and shirt concepts supplied by the campaign. They are shown
-                here as campaign visuals; availability and ordering have not
-                been announced.
-              </p>
-            </header>
-            <div className="materials-grid">
-              {campaignMaterials.map((material, index) => (
-                <figure
-                  className={index === 0 ? "material-sign" : undefined}
-                  key={material.src}
-                >
-                  <div className="material-frame">
-                    <Image
-                      alt={material.alt}
-                      fill
-                      sizes={
-                        index === 0
-                          ? "(max-width: 880px) 100vw, 66vw"
-                          : "(max-width: 880px) 100vw, 33vw"
-                      }
-                      src={material.src}
-                    />
-                  </div>
-                  <figcaption>{material.label}</figcaption>
-                </figure>
-              ))}
+              <DonationForm enabled={donationsEnabled} />
             </div>
           </div>
         </section>

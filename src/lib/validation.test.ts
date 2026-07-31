@@ -21,6 +21,7 @@ const volunteer = {
 };
 
 const donor = {
+  clientAttemptId: "019fb298-d014-7000-8000-000000000001",
   fullName: "Jordan Neighbor",
   email: "jordan@example.com",
   phone: "",
@@ -34,12 +35,7 @@ const donor = {
   occupation: "Teacher",
   employer: "Vance County Schools",
   amountCents: 10_000,
-  attestations: {
-    personalFunds: true,
-    ownName: true,
-    lawfulSource: true,
-    limitAcknowledged: true,
-  },
+  eligibilityConfirmed: true,
 };
 
 describe("validateVolunteerPayload", () => {
@@ -93,12 +89,48 @@ describe("validateDonationPayload", () => {
     const result = validateDonationPayload({
       ...donor,
       occupation: "",
-      attestations: { ...donor.attestations, ownName: false },
+      eligibilityConfirmed: false,
     });
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.fields.occupation).toBeTruthy();
-      expect(result.fields.attestations).toBeTruthy();
+      expect(result.fields.eligibilityConfirmed).toBeTruthy();
     }
+  });
+
+  it.each([
+    ["fullName", { fullName: "" }],
+    ["line1", { address: { ...donor.address, line1: "" } }],
+    ["city", { address: { ...donor.address, city: "" } }],
+    ["state", { address: { ...donor.address, state: "" } }],
+    ["postalCode", { address: { ...donor.address, postalCode: "" } }],
+    ["occupation", { occupation: "" }],
+    ["employer", { employer: "" }],
+  ])("rejects a blank required donor field: %s", (field, override) => {
+    const result = validateDonationPayload({ ...donor, ...override });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.fields[field]).toBeTruthy();
+  });
+
+  it("rejects anonymous and placeholder reporting values", () => {
+    const result = validateDonationPayload({
+      ...donor,
+      fullName: "Anonymous",
+      employer: "N/A",
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.fields.fullName).toBeTruthy();
+      expect(result.fields.employer).toBeTruthy();
+    }
+  });
+
+  it("requires a valid client attempt ID", () => {
+    const result = validateDonationPayload({
+      ...donor,
+      clientAttemptId: "not-a-uuid",
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.fields.form).toBeTruthy();
   });
 });

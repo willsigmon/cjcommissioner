@@ -17,8 +17,12 @@ export default async function DonationSuccessPage({
   if (sessionId?.startsWith("cs_")) {
     try {
       const session = await getStripe().checkout.sessions.retrieve(sessionId);
-      verified = session.payment_status === "paid";
-      if (typeof session.amount_total === "number") {
+      verified =
+        session.payment_status === "paid" &&
+        Boolean(session.metadata?.contribution_id) &&
+        session.metadata?.election_slug ===
+          process.env.DONATION_ELECTION_SLUG?.trim();
+      if (verified && typeof session.amount_total === "number") {
         amount = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
