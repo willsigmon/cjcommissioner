@@ -2,6 +2,7 @@ import { checkRateLimit } from "@vercel/firewall";
 import { NextResponse } from "next/server";
 import {
   attachStripeSession,
+  ContributionAttemptTerminalError,
   ContributionLimitError,
   markContributionFailed,
   reserveContribution,
@@ -133,6 +134,18 @@ export async function POST(request: Request) {
       sessionId: session.id,
     });
   } catch (error) {
+    if (error instanceof ContributionAttemptTerminalError) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message:
+            "That payment attempt is no longer active. Review the amount and continue again to start a new secure payment.",
+          retryWithNewAttempt: true,
+        },
+        { status: 409 },
+      );
+    }
+
     if (error instanceof ContributionLimitError) {
       return NextResponse.json(
         {

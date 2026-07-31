@@ -27,6 +27,7 @@ type ReservationResponse = {
   reason?:
     | "invalid_amount"
     | "eligibility_not_confirmed"
+    | "attempt_terminal"
     | "request_conflict"
     | "contribution_limit_exceeded";
   remaining_cents?: number;
@@ -45,6 +46,13 @@ export class ContributionLimitError extends Error {
   constructor(readonly remainingCents: number) {
     super("Contribution limit exceeded.");
     this.name = "ContributionLimitError";
+  }
+}
+
+export class ContributionAttemptTerminalError extends Error {
+  constructor() {
+    super("Contribution attempt is no longer active.");
+    this.name = "ContributionAttemptTerminalError";
   }
 }
 
@@ -189,6 +197,9 @@ export async function reserveContribution(
   if (!result.ok) {
     if (result.reason === "contribution_limit_exceeded") {
       throw new ContributionLimitError(result.remaining_cents ?? 0);
+    }
+    if (result.reason === "attempt_terminal") {
+      throw new ContributionAttemptTerminalError();
     }
     throw new ContributionStoreError(
       `Contribution reservation failed: ${result.reason ?? "unknown"}.`,

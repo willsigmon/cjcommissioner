@@ -135,66 +135,6 @@ begin
     );
   end if;
 
-  select *
-    into v_existing
-    from public.campaign_contributions
-   where client_attempt_id = p_client_attempt_id;
-
-  if found then
-    if v_existing.donor_fingerprint <> p_donor_fingerprint
-       or v_existing.amount_cents <> p_amount_cents then
-      return jsonb_build_object('ok', false, 'reason', 'request_conflict');
-    end if;
-
-    select coalesce(
-      sum(
-        case
-          when status = 'pending' and pending_expires_at > now()
-            then amount_cents - refunded_cents
-          when status in (
-            'paid',
-            'partially_refunded',
-            'refunded',
-            'requires_review',
-            'failed',
-            'expired'
-          ) then amount_cents - refunded_cents
-          else 0
-        end
-      ),
-      0
-    )::integer
-      into v_reserved_cents
-      from public.campaign_contributions
-     where election_slug = p_election_slug
-       and donor_fingerprint = p_donor_fingerprint
-       and id <> v_existing.id
-       and status in (
-         'pending',
-         'paid',
-         'partially_refunded',
-         'refunded',
-         'requires_review',
-         'failed',
-         'expired'
-       );
-
-    v_remaining_cents := greatest(p_max_cents - v_reserved_cents, 0);
-    if p_amount_cents > v_remaining_cents then
-      return jsonb_build_object(
-        'ok', false,
-        'reason', 'contribution_limit_exceeded',
-        'remaining_cents', v_remaining_cents
-      );
-    end if;
-
-    return jsonb_build_object(
-      'ok', true,
-      'contribution', to_jsonb(v_existing),
-      'reused', true
-    );
-  end if;
-
   perform pg_advisory_xact_lock(
     hashtextextended(p_election_slug || ':' || p_donor_fingerprint, 0)
   );
@@ -210,68 +150,22 @@ begin
       return jsonb_build_object('ok', false, 'reason', 'request_conflict');
     end if;
 
-    select coalesce(
-      sum(
-        case
-          when status = 'pending' and pending_expires_at > now()
-            then amount_cents - refunded_cents
-          when status in (
-            'paid',
-            'partially_refunded',
-            'refunded',
-            'requires_review',
-            'failed',
-            'expired'
-          ) then amount_cents - refunded_cents
-          else 0
-        end
-      ),
-      0
-    )::integer
-      into v_reserved_cents
-      from public.campaign_contributions
-     where election_slug = p_election_slug
-       and donor_fingerprint = p_donor_fingerprint
-       and id <> v_existing.id
-       and status in (
-         'pending',
-         'paid',
-         'partially_refunded',
-         'refunded',
-         'requires_review',
-         'failed',
-         'expired'
-       );
-
-    v_remaining_cents := greatest(p_max_cents - v_reserved_cents, 0);
-    if p_amount_cents > v_remaining_cents then
-      return jsonb_build_object(
-        'ok', false,
-        'reason', 'contribution_limit_exceeded',
-        'remaining_cents', v_remaining_cents
-      );
+    if v_existing.status <> 'pending'
+       or v_existing.pending_expires_at <= now() then
+      return jsonb_build_object('ok', false, 'reason', 'attempt_terminal');
     end if;
-
-    return jsonb_build_object(
-      'ok', true,
-      'contribution', to_jsonb(v_existing),
-      'reused', true
-    );
   end if;
 
   select coalesce(
     sum(
       case
-        when status = 'pending' and pending_expires_at > now()
-          then amount_cents - refunded_cents
+        when status = 'pending' then amount_cents
         when status in (
           'paid',
           'partially_refunded',
           'refunded',
-          'requires_review',
-          'failed',
-          'expired'
-        ) then amount_cents - refunded_cents
+          'requires_review'
+        ) then amount_cents
         else 0
       end
     ),
@@ -281,14 +175,13 @@ begin
     from public.campaign_contributions
    where election_slug = p_election_slug
      and donor_fingerprint = p_donor_fingerprint
+     and (v_existing.id is null or id <> v_existing.id)
      and status in (
        'pending',
        'paid',
        'partially_refunded',
        'refunded',
-       'requires_review',
-       'failed',
-       'expired'
+       'requires_review'
      );
 
   v_remaining_cents := greatest(p_max_cents - v_reserved_cents, 0);
@@ -297,6 +190,14 @@ begin
       'ok', false,
       'reason', 'contribution_limit_exceeded',
       'remaining_cents', v_remaining_cents
+    );
+  end if;
+
+  if v_existing.id is not null then
+    return jsonb_build_object(
+      'ok', true,
+      'contribution', to_jsonb(v_existing),
+      'reused', true
     );
   end if;
 
@@ -659,12 +560,12 @@ as
 with accepted_contributions as (
   select
     contribution.*,
-    sum(contribution.amount_cents - contribution.refunded_cents) over (
+    sum(contribution.amount_cents) over (
       partition by contribution.election_slug, contribution.donor_fingerprint
       order by contribution.paid_at, contribution.id
       rows between unbounded preceding and current row
     )::integer as donor_running_total_cents,
-    sum(contribution.amount_cents - contribution.refunded_cents) over (
+    sum(contribution.amount_cents) over (
       partition by contribution.election_slug, contribution.donor_fingerprint
     )::integer as donor_election_total_cents
   from public.campaign_contributions contribution

@@ -14,12 +14,12 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              `script-src 'self' 'unsafe-inline'${developmentScriptPolicy} https://js.stripe.com`,
+              `script-src 'self' 'unsafe-inline'${developmentScriptPolicy} https://js.stripe.com https://checkout.stripe.com`,
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob:",
+              "img-src 'self' data: blob: https://*.stripe.com",
               "font-src 'self' data:",
-              "connect-src 'self' https://api.stripe.com https://r.stripe.com",
-              "frame-src https://js.stripe.com https://hooks.stripe.com https://*.paypal.com",
+              "connect-src 'self' https://api.stripe.com https://r.stripe.com https://checkout.stripe.com",
+              "frame-src https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://*.paypal.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
           {
             key: "Permissions-Policy",
             value:
-              "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=(self \"https://js.stripe.com\")",
+              "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=(self \"https://js.stripe.com\" \"https://checkout.stripe.com\")",
           },
         ],
       },

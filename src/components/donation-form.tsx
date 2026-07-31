@@ -103,12 +103,14 @@ export function DonationForm({ enabled }: { enabled: boolean }) {
         message?: string;
         fields?: Record<string, string>;
         clientSecret?: string;
+        retryWithNewAttempt?: boolean;
       };
 
       if (!response.ok || !result.ok || !result.clientSecret) {
         setStatus("error");
         setMessage(result.message ?? "The secure payment form is unavailable.");
         setFields(result.fields ?? {});
+        if (result.retryWithNewAttempt) setClientAttemptId(null);
         return;
       }
 

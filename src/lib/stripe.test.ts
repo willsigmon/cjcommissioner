@@ -67,6 +67,22 @@ describe("Stripe production readiness", () => {
     expect(donationsAreEnabled()).toBe(true);
   });
 
+  it("opens Preview only with test keys", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_test_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_example");
+    expect(donationsAreEnabled()).toBe(true);
+  });
+
+  it("rejects live keys outside Vercel production", () => {
+    configureRequiredEnvironment();
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "pk_live_example");
+    vi.stubEnv("STRIPE_SECRET_KEY", "sk_live_example");
+    expect(donationsAreEnabled()).toBe(false);
+  });
+
   it("stays closed when the protected treasurer export is not configured", () => {
     configureRequiredEnvironment();
     vi.stubEnv("VERCEL_ENV", "production");

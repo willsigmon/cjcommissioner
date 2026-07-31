@@ -41,12 +41,13 @@ export function donationsAreEnabled() {
 
   if (!enabled) return false;
 
-  if (process.env.VERCEL_ENV === "production") {
-    return (
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.startsWith("pk_live_") ===
-        true && process.env.STRIPE_SECRET_KEY?.startsWith("sk_live_") === true
-    );
-  }
+  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  const liveMode = process.env.VERCEL_ENV === "production";
 
-  return true;
+  return liveMode
+    ? publishableKey?.startsWith("pk_live_") === true &&
+        secretKey?.startsWith("sk_live_") === true
+    : publishableKey?.startsWith("pk_test_") === true &&
+        secretKey?.startsWith("sk_test_") === true;
 }

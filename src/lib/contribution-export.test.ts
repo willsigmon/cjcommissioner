@@ -72,6 +72,7 @@ describe("treasurer contribution CSV", () => {
   it("paginates from the returned row count instead of assuming server page size", async () => {
     vi.stubEnv("SUPABASE_URL", "https://campaign.supabase.co");
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service-role-key");
+    vi.stubEnv("DONATION_ELECTION_SLUG", "2026-general");
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(
@@ -106,5 +107,8 @@ describe("treasurer contribution CSV", () => {
     expect(fetchMock.mock.calls[0]?.[1]?.headers.Range).toBe("0-999");
     expect(fetchMock.mock.calls[1]?.[1]?.headers.Range).toBe("2-1001");
     expect(String(fetchMock.mock.calls[0]?.[0])).toContain("updated_at=lte.");
+    expect(String(fetchMock.mock.calls[0]?.[0])).toContain(
+      "election_slug=eq.2026-general",
+    );
   });
 });

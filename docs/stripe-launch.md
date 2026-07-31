@@ -21,7 +21,9 @@ This checklist is intentionally fail-closed. Do not set the launch flags to
 
 ## Contribution ledger
 
-1. Create a campaign-dedicated Supabase project in `us-east-1`.
+1. Create separate campaign-dedicated Supabase projects in `us-east-1` for
+   Preview/test data and Production/live data. Never point both Vercel
+   environments at the same contribution ledger.
 2. Apply
    `supabase/migrations/20260729190000_create_campaign_contribution_ledger.sql`.
 3. Confirm Row Level Security is enabled and no `anon` or `authenticated`
@@ -29,8 +31,9 @@ This checklist is intentionally fail-closed. Do not set the launch flags to
 4. Generate a random `DONATION_FINGERPRINT_SECRET` of at least 32 characters.
    Preserve it for the full election. Do not rotate or replace it without a
    migration that recomputes every stored donor fingerprint.
-5. Add the Supabase URL and service-role key to Vercel as encrypted server-only
-   variables. Never expose the service-role key with a `NEXT_PUBLIC_` prefix.
+5. Add each Supabase URL and service-role key only to its matching Vercel
+   environment as encrypted server-only variables. Never expose a service-role
+   key with a `NEXT_PUBLIC_` prefix.
 6. Import or reconcile earlier contributions for the election before launch.
 7. Set `CONTRIBUTION_HISTORY_RECONCILED=true` only after the treasurer confirms
    those records are represented in the donor totals.
@@ -56,6 +59,9 @@ This checklist is intentionally fail-closed. Do not set the launch flags to
 6. Configure a Vercel Firewall rate-limit rule and set
    `VERCEL_DONATION_RATE_LIMIT_ID`.
 7. Set the remaining Preview variables from `.env.example`.
+   Use test Stripe keys and a Preview-only election slug such as
+   `preview-2026-general`; the application rejects live Stripe keys outside
+   Vercel Production.
 8. Set `DONATIONS_ENABLED=true` in Preview. Set
    `TREASURER_COPY_APPROVED=true` only after the copy is approved, and set
    `CONTRIBUTION_HISTORY_RECONCILED=true` only for a reconciled test ledger.
@@ -118,12 +124,23 @@ exporting a completed record with a blank required field.
 The over-$50 flag follows the statute's “exceed fifty dollars” wording: it
 becomes `YES` when the donor's election total is greater than $50.00.
 
+Running totals and the automatic cap use gross accepted contributions. Refunds
+are exported separately and do not automatically restore online contribution
+capacity; any adjustment requires treasurer review and authoritative campaign
+ledger reconciliation.
+
 The automatic $6,800 hold groups records by a keyed, normalized combination of
 the submitted legal name and mailing address. This blocks concurrent and repeat
 online contributions for the same normalized identity, but it cannot prove that
 two materially different names or addresses belong to the same legal person.
 The treasurer must review identity variants and all other contribution channels;
 the website check supplements rather than replaces that review.
+
+Pending Checkout amounts remain reserved until a verified Stripe terminal event
+marks them paid, failed, or expired. This fail-closed behavior prevents a delayed
+payment webhook from reopening capacity and allowing a donor over the cap. If a
+terminal webhook is missed, reconcile the Stripe session before manually changing
+the ledger; do not release a pending hold based on wall-clock age alone.
 
 ## Legal references
 

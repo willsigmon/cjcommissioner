@@ -93,19 +93,21 @@ export class ContributionExportIncompleteError extends ContributionExportError {
 function getContributionStoreConfig() {
   const url = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
-  if (!url || !serviceRoleKey) {
+  const electionSlug = process.env.DONATION_ELECTION_SLUG?.trim();
+  if (!url || !serviceRoleKey || !electionSlug) {
     throw new ContributionExportError(
       "The secure contribution ledger is not configured.",
     );
   }
-  return { serviceRoleKey, url };
+  return { electionSlug, serviceRoleKey, url };
 }
 
 export async function getContributionExportRows() {
-  const { serviceRoleKey, url } = getContributionStoreConfig();
+  const { electionSlug, serviceRoleKey, url } = getContributionStoreConfig();
   const endpoint = new URL(`${url}/rest/v1/campaign_contribution_export`);
   const cutoff = new Date().toISOString();
   endpoint.searchParams.set("select", exportColumns.join(","));
+  endpoint.searchParams.set("election_slug", `eq.${electionSlug}`);
   endpoint.searchParams.set("updated_at", `lte.${cutoff}`);
   endpoint.searchParams.set("order", "contribution_date.asc,id.asc");
 
