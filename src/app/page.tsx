@@ -11,7 +11,7 @@ import {
   proofMetrics,
   resultCases,
 } from "@/content/campaign";
-import { homePhotos } from "@/content/photos";
+import { chestnutStreetParkPhotos, homePhotos } from "@/content/photos";
 
 export default function HomePage() {
   return (
@@ -138,6 +138,23 @@ export default function HomePage() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="section park-section" id="chestnut-street-park">
+          <div className="shell">
+            <header className="section-header split-header">
+              <div>
+                <p className="section-label">Community revitalization</p>
+                <h2>Chestnut Street Park is moving forward.</h2>
+              </div>
+              <p>
+                Community-led fundraising exceeded $140,000 in partnership with
+                Henderson-Vance Recreation and Parks. Phase one is complete, and
+                CJ is continuing to lead the work toward phase two.
+              </p>
+            </header>
+            <PhotoLedger photos={chestnutStreetParkPhotos} />
           </div>
         </section>
 

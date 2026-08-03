@@ -6,6 +6,7 @@ import { CloseIcon, MenuIcon } from "@/components/icons";
 
 const navigation = [
   { href: "/#results", label: "Results" },
+  { href: "/#chestnut-street-park", label: "Chestnut Park" },
   { href: "/#priorities", label: "Priorities" },
   { href: "/#district", label: "District 3" },
   { href: "/my-story", label: "My Story" },

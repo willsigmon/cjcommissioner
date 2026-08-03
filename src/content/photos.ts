@@ -8,15 +8,28 @@ export type CampaignPhoto = {
   src: string;
 };
 
-export const homePhotos: CampaignPhoto[] = [
+export const chestnutStreetParkPhotos: CampaignPhoto[] = [
   {
-    alt: "CJ Turrentine with community members gathered at a local park",
-    caption: "Progress is strongest when neighbors can see themselves in it.",
-    label: "Neighborhood pride",
+    alt: "CJ Turrentine with community members at Chestnut Street Park",
+    caption:
+      "Phase one is complete at Chestnut Street Park, with the work toward phase two still moving forward.",
+    label: "Chestnut Street Park",
     ratio: "landscape",
     span: 7,
     src: "/photos/park-community-gathering.webp",
   },
+  {
+    alt: "CJ Turrentine helping at a youth activity in a Vance County park",
+    caption:
+      "Safe places, consistent adults, and youth opportunity are part of the work.",
+    label: "Park and Play",
+    ratio: "landscape",
+    span: 5,
+    src: "/photos/park-and-play.webp",
+  },
+];
+
+export const homePhotos: CampaignPhoto[] = [
   {
     alt: "CJ Turrentine helping with food distribution at a community event",
     caption: "Service means doing the practical work in front of you.",
@@ -24,14 +37,6 @@ export const homePhotos: CampaignPhoto[] = [
     ratio: "portrait",
     span: 5,
     src: "/photos/community-food-support.webp",
-  },
-  {
-    alt: "CJ Turrentine helping at a community basketball event",
-    caption: "Safe places and consistent adults give young people room to grow.",
-    label: "Youth and play",
-    ratio: "landscape",
-    span: 6,
-    src: "/photos/park-and-play.webp",
   },
   {
     alt: "CJ Turrentine with a local small-business owner",
