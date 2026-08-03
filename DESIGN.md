@@ -79,7 +79,7 @@ icon tiles, or automatic dark mode.
 ## Photography
 
 - Launch assets: owner-supplied formal, community, youth, veteran, and campaign
-  photographs received July 28, 2026
+  photographs received July 28 and August 2, 2026
 - Use the formal stair portrait as the homepage hero and documentary photography
   as an evidence ledger across the homepage and My Story
 - Use campaign sign and shirt artwork only as clearly labeled concepts; never
@@ -87,7 +87,8 @@ icon tiles, or automatic dark mode.
 - Produce optimized WebP derivatives with EXIF and location metadata removed
 - Do not generate, replace, reshape, or cosmetically alter the person
 - Avoid invented event names, partner endorsements, or identities in captions
-- Archival screenshots may be cropped by the layout but must not be retouched
+- Google Photos and social-media chrome may be cropped from owner-supplied captures;
+  the underlying photographs must not be retouched
 
 ## Accessibility
 
