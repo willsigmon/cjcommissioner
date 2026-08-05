@@ -10,14 +10,6 @@ export type CampaignPhoto = {
 
 export const homePhotos: CampaignPhoto[] = [
   {
-    alt: "CJ Turrentine with community members gathered at a local park",
-    caption: "Progress is strongest when neighbors can see themselves in it.",
-    label: "Neighborhood pride",
-    ratio: "landscape",
-    span: 7,
-    src: "/photos/park-community-gathering.webp",
-  },
-  {
     alt: "CJ Turrentine helping with food distribution at a community event",
     caption: "Service means doing the practical work in front of you.",
     label: "Community care",
@@ -34,28 +26,12 @@ export const homePhotos: CampaignPhoto[] = [
     src: "/photos/park-and-play.webp",
   },
   {
-    alt: "CJ Turrentine with a local small-business owner",
-    caption: "Local opportunity starts with listening to the people building here.",
-    label: "Small business",
-    ratio: "portrait",
-    span: 6,
-    src: "/photos/small-business-visit.webp",
-  },
-  {
     alt: "CJ Turrentine with public leaders during a North Carolina visit",
     caption: "Strong local leadership requires relationships beyond one room.",
     label: "Public service",
     ratio: "portrait",
     span: 4,
     src: "/photos/public-service.webp",
-  },
-  {
-    alt: "CJ Turrentine in conversation with community partners",
-    caption: "The work begins by sitting down, hearing people, and staying engaged.",
-    label: "Planning together",
-    ratio: "portrait",
-    span: 4,
-    src: "/photos/community-planning.webp",
   },
   {
     alt: "CJ Turrentine outdoors with two community leaders",
