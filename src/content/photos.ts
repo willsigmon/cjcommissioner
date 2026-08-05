@@ -10,15 +10,6 @@ export type CampaignPhoto = {
 
 export const chestnutStreetParkPhotos: CampaignPhoto[] = [
   {
-    alt: "CJ Turrentine with community members at Chestnut Street Park",
-    caption:
-      "Phase one is complete at Chestnut Street Park, with the work toward phase two still moving forward.",
-    label: "Chestnut Street Park",
-    ratio: "landscape",
-    span: 7,
-    src: "/photos/park-community-gathering.webp",
-  },
-  {
     alt: "CJ Turrentine helping at a youth activity in a Vance County park",
     caption:
       "Safe places, consistent adults, and youth opportunity are part of the work.",
@@ -39,28 +30,12 @@ export const homePhotos: CampaignPhoto[] = [
     src: "/photos/community-food-support.webp",
   },
   {
-    alt: "CJ Turrentine with a local small-business owner",
-    caption: "Local opportunity starts with listening to the people building here.",
-    label: "Small business",
-    ratio: "portrait",
-    span: 6,
-    src: "/photos/small-business-visit.webp",
-  },
-  {
     alt: "CJ Turrentine with public leaders during a North Carolina visit",
     caption: "Strong local leadership requires relationships beyond one room.",
     label: "Public service",
     ratio: "portrait",
     span: 4,
     src: "/photos/public-service.webp",
-  },
-  {
-    alt: "CJ Turrentine in conversation with community partners",
-    caption: "The work begins by sitting down, hearing people, and staying engaged.",
-    label: "Planning together",
-    ratio: "portrait",
-    span: 4,
-    src: "/photos/community-planning.webp",
   },
   {
     alt: "CJ Turrentine outdoors with two community leaders",
