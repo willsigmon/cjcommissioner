@@ -18,6 +18,39 @@ export default function HomePage() {
     <>
       <SiteHeader />
       <main>
+        <section
+          aria-labelledby="meet-cj-heading"
+          className="donate-rail"
+          id="meet-cj"
+        >
+          <div className="shell donate-rail-inner">
+            <div>
+              <p className="section-label">September 10 event</p>
+              <h2 id="meet-cj-heading">Meet the Candidate</h2>
+              <p>
+                CJ Turrentine · <time dateTime="2026-09-10">Thursday, September 10, 2026</time>
+                <br />
+                <time dateTime="2026-09-10T16:00:00-04:00">4:00 p.m.</time>
+                {"–"}
+                <time dateTime="2026-09-10T19:00:00-04:00">7:00 p.m.</time>
+                {" Eastern"}
+              </p>
+              <p>
+                <strong>The Sidney</strong>
+                <br />
+                184 Henry Ayscue Road, Henderson, NC 27537
+              </p>
+            </div>
+            <a
+              className="button button-outline"
+              href="https://www.facebook.com/groups/371340270467020/posts/2151050845829278/"
+            >
+              View event announcement
+              <ArrowUpRight />
+            </a>
+          </div>
+        </section>
+
         <section className="home-hero">
           <div className="shell hero-grid">
             <div className="hero-copy">
