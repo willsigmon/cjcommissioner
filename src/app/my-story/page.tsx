@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { publicPageMetadata } from "@/lib/site";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/icons";
@@ -8,11 +8,11 @@ import { SiteHeader } from "@/components/site-header";
 import { leadership } from "@/content/campaign";
 import { storyPhotos } from "@/content/photos";
 
-export const metadata: Metadata = {
-  title: "My Story",
-  description:
-    "CJ Turrentine shares how military service, recovery, and community work shaped his campaign for Vance County Commissioner.",
-};
+export const metadata = publicPageMetadata(
+  "My Story | CJ Turrentine",
+  "CJ Turrentine shares how military service, recovery, and community work shaped his campaign for Vance County Commissioner.",
+  "/my-story",
+);
 
 export default function MyStoryPage() {
   return (

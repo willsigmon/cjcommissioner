@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
+import { publicPageMetadata } from "@/lib/site";
 import { DonationForm } from "@/components/donation-form";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { donationsAreEnabled } from "@/lib/stripe";
 
-export const metadata: Metadata = {
-  title: "Donate | CJ Turrentine for Commissioner",
-  description:
-    "Support CJ Turrentine’s campaign for Vance County Commissioner, District 3.",
-};
+export const metadata = publicPageMetadata(
+  "Donate | CJ Turrentine for Commissioner",
+  "Support CJ Turrentine’s campaign for Vance County Commissioner, District 3.",
+  "/donate",
+);
 
 export default function DonatePage() {
   const donationsEnabled = donationsAreEnabled();

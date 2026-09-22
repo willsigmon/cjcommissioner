@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+import { publicPageMetadata } from "@/lib/site";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { campaign } from "@/content/campaign";
 
-export const metadata: Metadata = {
-  title: "Privacy",
-  description: "How the CJ Turrentine campaign website handles information.",
-};
+export const metadata = publicPageMetadata(
+  "Privacy | CJ Turrentine",
+  "How the CJ Turrentine campaign website handles information.",
+  "/privacy",
+);
 
 export default function PrivacyPage() {
   return (

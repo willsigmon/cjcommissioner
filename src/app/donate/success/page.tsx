@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { reconcileStripeSession } from "@/lib/contribution-reconciliation";
 import { getStripe } from "@/lib/stripe";
+
+export const metadata: Metadata = {
+  title: "Contribution status",
+  robots: { index: false, follow: true },
+};
 
 type SuccessPageProps = {
   searchParams: Promise<{ session_id?: string }>;

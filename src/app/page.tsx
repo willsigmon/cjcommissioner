@@ -25,7 +25,7 @@ export default function HomePage() {
         >
           <div className="shell donate-rail-inner">
             <div>
-              <p className="section-label">September 10 event</p>
+              <p className="section-label">Past event · September 10</p>
               <h2 id="meet-cj-heading">Meet the Candidate</h2>
               <p>
                 CJ Turrentine · <time dateTime="2026-09-10">Thursday, September 10, 2026</time>

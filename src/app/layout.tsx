@@ -5,6 +5,7 @@ import {
   Newsreader,
 } from "next/font/google";
 import "./globals.css";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 const archivoBlack = Archivo_Black({
   display: "swap",
@@ -29,7 +30,8 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://cjcommissioner.com"),
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "./" },
   title: {
     default: "CJ Turrentine for Vance County Commissioner | District 3",
     template: "%s | CJ Turrentine",
@@ -48,8 +50,8 @@ export const metadata: Metadata = {
     title: "A public servant. A proven record.",
     description:
       "Meet CJ Turrentine and see the results behind his campaign for Vance County Commission District 3.",
-    url: "https://cjcommissioner.com",
-    siteName: "CJ Turrentine for Commissioner",
+    url: SITE_URL,
+    siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
     images: ["/opengraph-image"],
@@ -79,7 +81,20 @@ export default function RootLayout({
       className={`${archivoBlack.variable} ${plexSans.variable} ${newsreader.variable}`}
       lang="en"
     >
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: SITE_NAME,
+              url: SITE_URL,
+            }),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
